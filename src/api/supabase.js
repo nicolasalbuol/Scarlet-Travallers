@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-const url = import.meta.env.VITE_SUPABASE_URL;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+   const url = import.meta.env.VITE_SUPABASE_URL || "https://gyvkmxpyxbjhstzfqnbp.supabase.co";
+   const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_dJInnJppokHvcYS_x_xE-A_SSUaEUwH";
 
 if (!url || !anonKey) {
   // Aparece no console do navegador se as variáveis não foram configuradas no Vercel.
