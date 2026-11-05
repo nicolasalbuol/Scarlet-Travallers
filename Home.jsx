@@ -96,7 +96,7 @@ export default function Home() {
             className="mt-7 flex flex-wrap gap-3 justify-center lg:justify-start"
           >
             <Link to="/characters?new=true">
-              <Button className="h-11 px-6 rounded-full font-cinzel tracking-wider bg-primary hover:bg-primary/90 shadow-[0_0_30px_-4px_hsl(145_85%_50%/0.7)]">
+              <Button className="h-11 px-6 rounded-full font-cinzel tracking-wider bg-primary hover:bg-primary/90 shadow-[0_0_30px_-4px_hsl(161_38%_50%/0.7)]">
                 <Plus className="w-4 h-4 mr-2" /> Nova ficha
               </Button>
             </Link>

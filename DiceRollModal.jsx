@@ -16,7 +16,7 @@ function SpinningD20({ rolling, value, tone = "default" }) {
     const id = setInterval(() => setFace(1 + Math.floor(Math.random() * 20)), 55);
     return () => clearInterval(id);
   }, [rolling, value]);
-  const stroke = tone === "crit" ? "hsl(40 80% 65%)" : tone === "fail" ? "hsl(14 88% 58%)" : "hsl(145 85% 58%)";
+  const stroke = tone === "crit" ? "hsl(40 80% 65%)" : tone === "fail" ? "hsl(14 88% 58%)" : "hsl(161 38% 58%)";
   return (
     <motion.div
       className="relative w-28 h-28 mx-auto"
@@ -24,7 +24,7 @@ function SpinningD20({ rolling, value, tone = "default" }) {
       transition={rolling ? { duration: 1, ease: "easeOut" } : { type: "spring", stiffness: 300, damping: 12 }}
     >
       <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full overflow-visible" aria-hidden="true">
-        <polygon points="50,3 92,27 92,73 50,97 8,73 8,27" fill="hsl(150 20% 8%)" stroke={stroke} strokeWidth="2" style={{ filter: `drop-shadow(0 0 10px ${stroke})` }} />
+        <polygon points="50,3 92,27 92,73 50,97 8,73 8,27" fill="hsl(161 20% 8%)" stroke={stroke} strokeWidth="2" style={{ filter: `drop-shadow(0 0 10px ${stroke})` }} />
         <polygon points="50,22 76,66 24,66" fill="none" stroke={stroke} strokeOpacity="0.7" strokeWidth="1.2" />
         <g stroke={stroke} strokeOpacity="0.35" strokeWidth="1">
           <line x1="50" y1="3" x2="50" y2="22" /><line x1="92" y1="27" x2="76" y2="66" /><line x1="92" y1="27" x2="50" y2="22" />
@@ -99,7 +99,7 @@ export default function DiceRollModal({
       setIsRolling(false);
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (res.isCritical && !reduce) {
-        confetti({ particleCount: 140, spread: 80, startVelocity: 42, origin: { y: 0.55 }, colors: ["#e8c26a", "#f5dc9b", "#22c55e", "#ffffff"], zIndex: 9999 });
+        confetti({ particleCount: 140, spread: 80, startVelocity: 42, origin: { y: 0.55 }, colors: ["#e8c26a", "#f5dc9b", "#5f8c7e", "#ffffff"], zIndex: 9999 });
       }
       if (onRollResult) onRollResult({ ...res, label });
       if (navigator.vibrate && res.isCritical) navigator.vibrate([100, 50, 100, 50, 200]);
@@ -125,7 +125,7 @@ export default function DiceRollModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-card/95 backdrop-blur-xl border-primary/30 shadow-[0_0_80px_-20px_hsl(145_85%_45%/0.8)]">
+      <DialogContent className="sm:max-w-md bg-card/95 backdrop-blur-xl border-primary/30 shadow-[0_0_80px_-20px_hsl(161_38%_45%/0.8)]">
         <DialogHeader>
           <DialogTitle className="font-cinzel text-xl flex items-center gap-2 text-primary">
             <Dices className="w-6 h-6" />
@@ -180,7 +180,7 @@ export default function DiceRollModal({
           <Button
             onClick={handleRoll}
             disabled={isRolling}
-            className="w-full h-14 text-lg font-cinzel font-bold tracking-[0.3em] bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_-6px_hsl(145_85%_50%/0.9)]"
+            className="w-full h-14 text-lg font-cinzel font-bold tracking-[0.3em] bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_-6px_hsl(161_38%_50%/0.9)]"
           >
             {isRolling ? (
               <Dices className="w-6 h-6 animate-dice-roll" />

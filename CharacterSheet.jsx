@@ -28,7 +28,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { classAbilityCatalog, traitAbilities } from "@/lib/autoBuild";
 
 const TAB_CLS =
-  "flex-shrink-0 text-xs px-3 py-2.5 rounded-none rounded-t-lg border-b-2 border-transparent text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_8px_20px_-10px_hsl(145_85%_50%/0.9)]";
+  "flex-shrink-0 text-xs px-3 py-2.5 rounded-none rounded-t-lg border-b-2 border-transparent text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_8px_20px_-10px_hsl(161_38%_50%/0.9)]";
 
 const PANE_CLS = "data-[state=active]:animate-in data-[state=active]:fade-in-0 data-[state=active]:slide-in-from-bottom-3 duration-500";
 

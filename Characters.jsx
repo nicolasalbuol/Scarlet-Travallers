@@ -93,7 +93,7 @@ export default function Characters() {
             {characters.length} {characters.length === 1 ? "agente registrado" : "agentes registrados"}
           </p>
         </div>
-        <Button onClick={() => navigate("/character/new")} className="h-11 px-5 rounded-full font-cinzel tracking-wider bg-primary hover:bg-primary/90 shadow-[0_0_30px_-6px_hsl(145_85%_50%/0.8)]">
+        <Button onClick={() => navigate("/character/new")} className="h-11 px-5 rounded-full font-cinzel tracking-wider bg-primary hover:bg-primary/90 shadow-[0_0_30px_-6px_hsl(161_38%_50%/0.8)]">
           <Plus className="w-4 h-4 mr-2" />
           Nova Ficha
         </Button>

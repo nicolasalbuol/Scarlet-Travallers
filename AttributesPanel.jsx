@@ -30,23 +30,23 @@ function AttributeRadar({ attrs, onRoll, editMode }) {
             return `${100 + 72 * r * Math.cos(a)},${100 + 72 * r * Math.sin(a)}`;
           }).join(" ")}
           fill="none"
-          stroke="hsl(150 32% 22%)"
+          stroke="hsl(161 32% 22%)"
           strokeWidth="0.8"
         />
       ))}
       {pts.map((p) => (
-        <line key={p.k} x1="100" y1="100" x2={100 + 72 * Math.cos(p.a)} y2={100 + 72 * Math.sin(p.a)} stroke="hsl(150 32% 18%)" strokeWidth="0.6" />
+        <line key={p.k} x1="100" y1="100" x2={100 + 72 * Math.cos(p.a)} y2={100 + 72 * Math.sin(p.a)} stroke="hsl(161 32% 18%)" strokeWidth="0.6" />
       ))}
       <motion.polygon
         points={poly}
         initial={false}
         animate={{ points: poly }}
         transition={{ type: "spring", stiffness: 120, damping: 14 }}
-        fill="hsl(145 85% 50% / 0.22)"
-        stroke="hsl(145 85% 58%)"
+        fill="hsl(161 38% 50% / 0.22)"
+        stroke="hsl(161 38% 58%)"
         strokeWidth="1.4"
         strokeLinejoin="round"
-        style={{ filter: "drop-shadow(0 0 6px hsl(145 90% 50% / 0.6))" }}
+        style={{ filter: "drop-shadow(0 0 6px hsl(161 38% 50% / 0.6))" }}
       />
       {pts.map((p) => (
         <g

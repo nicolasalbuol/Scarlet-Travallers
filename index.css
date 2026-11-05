@@ -15,66 +15,66 @@
     --font-inter: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-    --background: 150 22% 4%;
+    --background: 161 22% 4%;
     --foreground: 30 20% 92%;
-    --card: 150 18% 7%;
+    --card: 161 18% 7%;
     --card-foreground: 30 20% 92%;
-    --popover: 150 20% 6%;
+    --popover: 161 20% 6%;
     --popover-foreground: 30 20% 92%;
-    --primary: 145 68% 45%;
-    --primary-foreground: 150 40% 6%;
-    --secondary: 150 16% 12%;
+    --primary: 161 19% 46%;
+    --primary-foreground: 160 30% 6%;
+    --secondary: 161 16% 12%;
     --secondary-foreground: 30 20% 92%;
-    --muted: 150 14% 11%;
+    --muted: 161 14% 11%;
     --muted-foreground: 20 10% 62%;
     --accent: 40 58% 58%;
-    --accent-foreground: 150 22% 6%;
+    --accent-foreground: 161 22% 6%;
     --destructive: 14 88% 55%;
     --destructive-foreground: 30 30% 97%;
-    --border: 150 32% 17%;
-    --input: 150 26% 16%;
-    --ring: 145 68% 45%;
-    --chart-1: 145 68% 45%;
+    --border: 161 32% 17%;
+    --input: 161 26% 16%;
+    --ring: 161 19% 46%;
+    --chart-1: 161 19% 46%;
     --chart-2: 40 58% 58%;
-    --chart-3: 145 55% 38%;
+    --chart-3: 161 38% 38%;
     --chart-4: 20 50% 50%;
-    --chart-5: 150 25% 60%;
+    --chart-5: 161 25% 60%;
     --radius: 0.85rem;
-    --sidebar-background: 150 20% 5%;
+    --sidebar-background: 161 20% 5%;
     --sidebar-foreground: 30 20% 92%;
-    --sidebar-primary: 145 68% 45%;
-    --sidebar-primary-foreground: 150 40% 6%;
-    --sidebar-accent: 150 16% 12%;
+    --sidebar-primary: 161 19% 46%;
+    --sidebar-primary-foreground: 160 30% 6%;
+    --sidebar-accent: 161 16% 12%;
     --sidebar-accent-foreground: 30 20% 92%;
-    --sidebar-border: 150 32% 17%;
-    --sidebar-ring: 145 68% 45%;
+    --sidebar-border: 161 32% 17%;
+    --sidebar-ring: 161 19% 46%;
 
-    --scarlet: 145 68% 45%;
-    --scarlet-deep: 145 75% 28%;
+    --scarlet: 161 19% 46%;
+    --scarlet-deep: 161 38% 28%;
     --gold: 40 58% 58%;
   }
 
   /* O site é sempre escuro; .dark repete os mesmos valores. */
   .dark {
-    --background: 150 22% 4%;
+    --background: 161 22% 4%;
     --foreground: 30 20% 92%;
-    --card: 150 18% 7%;
+    --card: 161 18% 7%;
     --card-foreground: 30 20% 92%;
-    --popover: 150 20% 6%;
+    --popover: 161 20% 6%;
     --popover-foreground: 30 20% 92%;
-    --primary: 145 68% 45%;
-    --primary-foreground: 150 40% 6%;
-    --secondary: 150 16% 12%;
+    --primary: 161 19% 46%;
+    --primary-foreground: 160 30% 6%;
+    --secondary: 161 16% 12%;
     --secondary-foreground: 30 20% 92%;
-    --muted: 150 14% 11%;
+    --muted: 161 14% 11%;
     --muted-foreground: 20 10% 62%;
     --accent: 40 58% 58%;
-    --accent-foreground: 150 22% 6%;
+    --accent-foreground: 161 22% 6%;
     --destructive: 14 88% 55%;
     --destructive-foreground: 30 30% 97%;
-    --border: 150 32% 17%;
-    --input: 150 26% 16%;
-    --ring: 145 68% 45%;
+    --border: 161 32% 17%;
+    --input: 161 26% 16%;
+    --ring: 161 19% 46%;
   }
 }
 
@@ -89,7 +89,7 @@
   body {
     @apply bg-background text-foreground;
     background:
-      radial-gradient(1200px 600px at 85% -10%, hsl(145 80% 30% / 0.18), transparent 60%),
+      radial-gradient(1200px 600px at 85% -10%, hsl(161 38% 30% / 0.18), transparent 60%),
       radial-gradient(900px 500px at -10% 110%, hsl(40 58% 40% / 0.08), transparent 60%),
       hsl(var(--background));
     background-attachment: fixed;
@@ -111,7 +111,7 @@
 
   /* Título com brilho escarlate que "respira" */
   .text-scarlet-gradient {
-    background: linear-gradient(100deg, hsl(30 30% 96%) 0%, hsl(145 85% 62%) 40%, hsl(40 70% 66%) 60%, hsl(30 30% 96%) 100%);
+    background: linear-gradient(100deg, hsl(30 30% 96%) 0%, hsl(161 38% 62%) 40%, hsl(40 70% 66%) 60%, hsl(30 30% 96%) 100%);
     background-size: 250% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -122,7 +122,7 @@
   /* Painel de vidro escuro com borda viva */
   .st-panel {
     position: relative;
-    background: linear-gradient(180deg, hsl(150 18% 8% / 0.82), hsl(150 20% 5% / 0.82));
+    background: linear-gradient(180deg, hsl(161 18% 8% / 0.82), hsl(161 20% 5% / 0.82));
     border: 1px solid hsl(var(--border));
     border-radius: var(--radius);
     backdrop-filter: blur(10px);
@@ -140,7 +140,7 @@
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: conic-gradient(from var(--st-angle, 0deg), hsl(145 80% 52% / 0.0), hsl(145 80% 55% / 0.9), hsl(40 60% 60% / 0.8), hsl(145 80% 52% / 0.0) 40%);
+    background: conic-gradient(from var(--st-angle, 0deg), hsl(161 38% 52% / 0.0), hsl(161 38% 55% / 0.9), hsl(40 60% 60% / 0.8), hsl(161 38% 52% / 0.0) 40%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -212,7 +212,7 @@
 ::-webkit-scrollbar { width: 7px; height: 7px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(hsl(145 60% 30%), hsl(145 50% 20%));
+  background: linear-gradient(hsl(161 38% 30%), hsl(161 38% 20%));
   border-radius: 4px;
 }
 
@@ -233,8 +233,8 @@
 .animate-critical { animation: criticalGlow 1.2s ease-in-out infinite; }
 
 @keyframes failGlow {
-  0%, 100% { box-shadow: 0 0 20px hsl(145 80% 45% / 0.5); }
-  50% { box-shadow: 0 0 44px hsl(145 85% 50% / 0.85); }
+  0%, 100% { box-shadow: 0 0 20px hsl(161 38% 45% / 0.5); }
+  50% { box-shadow: 0 0 44px hsl(161 38% 50% / 0.85); }
 }
 .animate-fail { animation: failGlow 1s ease-in-out infinite; }
 

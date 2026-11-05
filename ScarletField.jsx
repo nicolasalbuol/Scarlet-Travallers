@@ -84,7 +84,7 @@ export default function ScarletField() {
           const b = nodes[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < 160) {
-            ctx.strokeStyle = `hsla(145, 80%, 55%, ${(1 - d / 160) * 0.22})`;
+            ctx.strokeStyle = `hsla(161, 38%, 55%, ${(1 - d / 160) * 0.22})`;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }
         }
@@ -107,8 +107,8 @@ export default function ScarletField() {
         e.x += Math.sin(e.drift + t) * 0.25;
         const flicker = 0.55 + Math.sin(t * 3 + i) * 0.25;
         const g = ctx.createRadialGradient(e.x, e.y, 0, e.x, e.y, e.r * 4);
-        g.addColorStop(0, `hsla(140, 90%, 62%, ${0.75 * e.life * flicker})`);
-        g.addColorStop(1, "hsla(145, 90%, 40%, 0)");
+        g.addColorStop(0, `hsla(161, 38%, 62%, ${0.75 * e.life * flicker})`);
+        g.addColorStop(1, "hsla(161, 38%, 40%, 0)");
         ctx.fillStyle = g;
         ctx.beginPath(); ctx.arc(e.x, e.y, e.r * 4, 0, Math.PI * 2); ctx.fill();
         if (e.y < -20) embers[i] = newEmber(false);

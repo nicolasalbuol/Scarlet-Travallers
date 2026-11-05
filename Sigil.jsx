@@ -16,9 +16,9 @@ export default function Sigil({ size = 220, showLogo = true, draw = true, classN
       <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full overflow-visible" aria-hidden="true">
         <defs>
           <radialGradient id="st-sigil-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(145 85% 50%)" stopOpacity="0.45" />
-            <stop offset="70%" stopColor="hsl(145 85% 40%)" stopOpacity="0.05" />
-            <stop offset="100%" stopColor="hsl(145 85% 40%)" stopOpacity="0" />
+            <stop offset="0%" stopColor="hsl(161 38% 50%)" stopOpacity="0.45" />
+            <stop offset="70%" stopColor="hsl(161 38% 40%)" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="hsl(161 38% 40%)" stopOpacity="0" />
           </radialGradient>
           <path id="st-rune-path" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />
         </defs>
@@ -26,13 +26,13 @@ export default function Sigil({ size = 220, showLogo = true, draw = true, classN
 
         <g style={{ transformOrigin: "100px 100px", animation: "st-spin 40s linear infinite" }}>
           <circle cx="100" cy="100" r="94" fill="none" stroke="hsl(40 58% 58%)" strokeOpacity="0.35" strokeWidth="0.6" strokeDasharray="1 4" />
-          <text fill="hsl(145 80% 60%)" fillOpacity="0.75" fontSize="8.5" letterSpacing="3.2">
+          <text fill="hsl(161 38% 60%)" fillOpacity="0.75" fontSize="8.5" letterSpacing="3.2">
             <textPath href="#st-rune-path">{runes.join(" ")}</textPath>
           </text>
         </g>
 
         <g style={{ transformOrigin: "100px 100px", animation: "st-spin-rev 28s linear infinite" }}>
-          <circle cx="100" cy="100" r="72" fill="none" stroke="hsl(145 80% 55%)" strokeOpacity="0.6" strokeWidth="0.8" />
+          <circle cx="100" cy="100" r="72" fill="none" stroke="hsl(161 38% 55%)" strokeOpacity="0.6" strokeWidth="0.8" />
           <circle cx="100" cy="100" r="68" fill="none" stroke="hsl(40 58% 58%)" strokeOpacity="0.4" strokeWidth="0.5" strokeDasharray="6 3 1 3" />
           {Array.from({ length: 12 }).map((_, i) => {
             const a = (i / 12) * Math.PI * 2;
@@ -50,7 +50,7 @@ export default function Sigil({ size = 220, showLogo = true, draw = true, classN
             })
             .join(" ")}
           fill="none"
-          stroke="hsl(145 85% 58%)"
+          stroke="hsl(161 38% 58%)"
           strokeWidth="1"
           strokeLinejoin="round"
           style={draw ? { strokeDasharray: 1200, strokeDashoffset: 1200, animation: "st-draw 2.4s cubic-bezier(.6,.05,.3,1) forwards" } : undefined}
@@ -61,7 +61,7 @@ export default function Sigil({ size = 220, showLogo = true, draw = true, classN
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative" style={{ width: size * 0.4, height: size * 0.4 }}>
             <span className="absolute inset-0 rounded-full border border-primary/60" style={{ animation: "st-pulse-ring 2.6s ease-out infinite" }} />
-            <img src={LOGO_URL} alt="Scarlet Travellers" className="relative w-full h-full rounded-full object-cover ring-2 ring-primary/50 shadow-[0_0_40px_hsl(145_85%_45%/0.55)]" />
+            <img src={LOGO_URL} alt="Scarlet Travellers" className="relative w-full h-full rounded-full object-cover ring-2 ring-primary/50 shadow-[0_0_40px_hsl(161_38%_45%/0.55)]" />
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/AuthContext";
 import ScarletField from "@/components/fx/ScarletField";
 import RiftTransition from "@/components/fx/RiftTransition";
 import { LOGO_URL } from "@/components/fx/Sigil";
+import { SITE_VERSION } from "@/lib/version";
 
 const NAV_ITEMS = [
   { path: "/", icon: Home, label: "Início", hint: "Saguão" },
@@ -32,7 +33,7 @@ export default function AppLayout() {
 
       <div className="flex flex-1 relative z-10">
         {/* Barra lateral (desktop) */}
-        <aside className="hidden xl:flex flex-col w-72 shrink-0 sticky top-0 h-screen border-r border-border/70 bg-[hsl(150_22%_4%/0.72)] backdrop-blur-xl px-5 py-7">
+        <aside className="hidden xl:flex flex-col w-72 shrink-0 sticky top-0 h-screen border-r border-border/70 bg-[hsl(161_22%_4%/0.72)] backdrop-blur-xl px-5 py-7">
           <Link to="/" className="flex items-center gap-3 mb-10 group">
             <div className="relative">
               <span className="absolute -inset-1 rounded-full bg-primary/40 blur-md opacity-60 group-hover:opacity-100 transition-opacity" />
@@ -70,7 +71,7 @@ export default function AppLayout() {
                     {isActive && (
                       <motion.span
                         layoutId="st-nav-thread"
-                        className="absolute -left-5 top-1/2 -translate-y-1/2 h-8 w-[3px] rounded-full bg-primary shadow-[0_0_14px_hsl(145_90%_55%)]"
+                        className="absolute -left-5 top-1/2 -translate-y-1/2 h-8 w-[3px] rounded-full bg-primary shadow-[0_0_14px_hsl(161_38%_55%)]"
                       />
                     )}
                     <item.icon className={`relative w-[18px] h-[18px] transition-transform duration-300 group-hover:scale-110 ${isActive ? "text-primary" : ""}`} />
@@ -91,6 +92,7 @@ export default function AppLayout() {
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 mt-3">
               Sistema de Izumi Yoshikawa
             </p>
+            <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground/40 mt-1">{SITE_VERSION}</p>
           </div>
         </aside>
 
@@ -108,7 +110,7 @@ export default function AppLayout() {
       </div>
 
       {/* Navegação inferior (celular) */}
-      <nav className="xl:hidden fixed bottom-3 left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(150_20%_5%/0.88)] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(145_80%_30%/0.6)]">
+      <nav className="xl:hidden fixed bottom-3 left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(161_20%_5%/0.88)] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(161_38%_30%/0.6)]">
         <div className="flex items-stretch justify-between px-1 py-1">
           {items.map((item) => {
             const isActive = isActivePath(item.path);

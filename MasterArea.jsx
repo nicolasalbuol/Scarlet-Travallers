@@ -57,7 +57,7 @@ function Vault({ onUnlock }) {
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
                 animate={opening ? { rotate: [0, -25, 0], y: [0, -6, 0] } : {}}
-                className="w-16 h-16 rounded-full bg-background border border-primary/50 flex items-center justify-center shadow-[0_0_30px_hsl(145_85%_45%/0.6)]"
+                className="w-16 h-16 rounded-full bg-background border border-primary/50 flex items-center justify-center shadow-[0_0_30px_hsl(161_38%_45%/0.6)]"
               >
                 {opening ? <Unlock className="w-7 h-7 text-accent" /> : <Lock className="w-7 h-7 text-primary" />}
               </motion.div>
