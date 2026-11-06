@@ -54,7 +54,7 @@ function AttributeRadar({ attrs, onRoll, editMode }) {
           className={editMode ? "" : "cursor-pointer"}
           onClick={() => !editMode && onRoll(`${ATTRIBUTE_NAMES[p.k]} (${p.k})`, Number(attrs[p.k]) || 0)}
         >
-          <motion.circle initial={false} animate={{ cx: p.x, cy: p.y }} transition={{ type: "spring", stiffness: 120, damping: 14 }} r="3" fill="hsl(40 70% 65%)" />
+          <motion.circle initial={false} animate={{ cx: p.x, cy: p.y }} transition={{ type: "spring", stiffness: 120, damping: 14 }} r="3" fill="hsl(152 50% 65%)" />
           <text x={p.lx} y={p.ly} textAnchor="middle" dominantBaseline="middle" fontSize="9" letterSpacing="1.5" fill="hsl(20 10% 70%)" fontFamily="Cinzel, serif">
             {p.k}
           </text>

@@ -4,6 +4,7 @@ import { Home, BookOpen, ScrollText, User, Flag, Shield, Crown } from "lucide-re
 import { motion } from "framer-motion";
 import { useAuth } from "@/lib/AuthContext";
 import ScarletField from "@/components/fx/ScarletField";
+import GreenTraces from "@/components/fx/GreenTraces";
 import RiftTransition from "@/components/fx/RiftTransition";
 import { LOGO_URL } from "@/components/fx/Sigil";
 import { SITE_VERSION } from "@/lib/version";
@@ -28,6 +29,7 @@ export default function AppLayout() {
 
   return (
     <div className="min-h-screen font-inter flex flex-col st-grain relative">
+      <GreenTraces />
       <ScarletField />
       <RiftTransition routeKey={location.pathname} />
 

@@ -16,7 +16,7 @@ function SpinningD20({ rolling, value, tone = "default" }) {
     const id = setInterval(() => setFace(1 + Math.floor(Math.random() * 20)), 55);
     return () => clearInterval(id);
   }, [rolling, value]);
-  const stroke = tone === "crit" ? "hsl(40 80% 65%)" : tone === "fail" ? "hsl(14 88% 58%)" : "hsl(161 38% 58%)";
+  const stroke = tone === "crit" ? "hsl(152 50% 65%)" : tone === "fail" ? "hsl(14 88% 58%)" : "hsl(161 38% 58%)";
   return (
     <motion.div
       className="relative w-28 h-28 mx-auto"
@@ -99,7 +99,7 @@ export default function DiceRollModal({
       setIsRolling(false);
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (res.isCritical && !reduce) {
-        confetti({ particleCount: 140, spread: 80, startVelocity: 42, origin: { y: 0.55 }, colors: ["#e8c26a", "#f5dc9b", "#5f8c7e", "#ffffff"], zIndex: 9999 });
+        confetti({ particleCount: 140, spread: 80, startVelocity: 42, origin: { y: 0.55 }, colors: ["#5f8c7e", "#8fc4b0", "#cdeee0", "#ffffff"], zIndex: 9999 });
       }
       if (onRollResult) onRollResult({ ...res, label });
       if (navigator.vibrate && res.isCritical) navigator.vibrate([100, 50, 100, 50, 200]);

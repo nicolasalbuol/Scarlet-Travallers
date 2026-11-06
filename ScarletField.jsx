@@ -91,11 +91,11 @@ export default function ScarletField() {
         if (mouse.active) {
           const d = Math.hypot(a.x - mouse.x, a.y - mouse.y);
           if (d < 200) {
-            ctx.strokeStyle = `hsla(40, 70%, 62%, ${(1 - d / 200) * 0.35})`;
+            ctx.strokeStyle = `hsla(152, 50%, 62%, ${(1 - d / 200) * 0.35})`;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
           }
         }
-        ctx.fillStyle = "hsla(40, 70%, 66%, 0.7)";
+        ctx.fillStyle = "hsla(152, 50%, 66%, 0.7)";
         ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
       }
 
@@ -119,7 +119,7 @@ export default function ScarletField() {
         const s = sparks[i];
         s.x += s.vx; s.y += s.vy; s.vy += 0.015; s.life -= 0.022;
         if (s.life <= 0) { sparks.splice(i, 1); continue; }
-        ctx.fillStyle = `hsla(${30 + s.life * 20}, 90%, 65%, ${s.life})`;
+        ctx.fillStyle = `hsla(${140 + s.life * 20}, 55%, ${62 + s.life * 10}%, ${s.life})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, s.r * s.life, 0, Math.PI * 2); ctx.fill();
       }
 

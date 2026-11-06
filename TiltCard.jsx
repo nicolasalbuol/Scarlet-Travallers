@@ -57,7 +57,7 @@ export default function TiltCard({ children, className = "", max = 8, glare = tr
           style={{
             padding: 1,
             background:
-              "radial-gradient(260px circle at var(--mx) var(--my), hsl(40 70% 62% / 0.85), transparent 60%)",
+              "radial-gradient(260px circle at var(--mx) var(--my), hsl(152 50% 62% / 0.85), transparent 60%)",
             WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
             WebkitMaskComposite: "xor",
             maskComposite: "exclude",

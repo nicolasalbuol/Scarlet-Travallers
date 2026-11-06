@@ -26,7 +26,7 @@ export default function DefensePanel({ character, editMode, updateField }) {
   return (
     <div className="grid grid-cols-2 gap-3 mb-5">
       <DefenseCard icon={Shield} label="CA Físico" value={character.ca_physical} editMode={editMode} onChange={(v) => updateField("ca_physical", v)} hue={161} />
-      <DefenseCard icon={ShieldHalf} label="CA Mágico" value={character.ca_magical} editMode={editMode} onChange={(v) => updateField("ca_magical", v)} hue={40} />
+      <DefenseCard icon={ShieldHalf} label="CA Mágico" value={character.ca_magical} editMode={editMode} onChange={(v) => updateField("ca_magical", v)} hue={168} />
     </div>
   );
 }

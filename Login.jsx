@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { supabase } from "@/api/supabase";
 import Sigil from "@/components/fx/Sigil";
 import ScarletField from "@/components/fx/ScarletField";
+import GreenTraces from "@/components/fx/GreenTraces";
 import ScrambleText from "@/components/fx/ScrambleText";
 import { SITE_VERSION } from "@/lib/version";
 
@@ -71,6 +72,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center px-4 py-10 st-grain">
+      <GreenTraces />
       <ScarletField />
       <div className="relative z-10 w-full max-w-sm">
         <div className="flex justify-center -mb-16">

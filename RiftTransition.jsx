@@ -48,7 +48,7 @@ export default function RiftTransition({ routeKey }) {
           <motion.div
             className="absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2"
             style={{
-              background: "linear-gradient(180deg, transparent, hsl(161 38% 60%), hsl(40 80% 70%), hsl(161 38% 60%), transparent)",
+              background: "linear-gradient(180deg, transparent, hsl(161 38% 60%), hsl(152 50% 70%), hsl(161 38% 60%), transparent)",
               boxShadow: "0 0 24px 6px hsl(161 38% 50% / 0.6)",
             }}
             initial={{ scaleY: 0, opacity: 1 }}
