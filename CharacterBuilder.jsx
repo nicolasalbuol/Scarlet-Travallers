@@ -35,7 +35,8 @@ import CasaBonusModal from "@/components/builder/CasaBonusModal";
 import VinculosStep from "@/components/builder/VinculosStep";
 import { PASSADO_DEFAULTS } from "@/lib/passadoData";
 import { buildPrereqState, evaluatePrerequisites } from "@/lib/prerequisites";
-import { startingKit, rollStartingVitals } from "@/lib/autoBuild";
+import { startingKit, applyCasaSkillBonus, matchSkill, TRAINED_VALUE } from "@/lib/autoBuild";
+import PericiasStep, { periciaLimit } from "@/components/builder/PericiasStep";
 import AutoKitPreview from "@/components/builder/AutoKitPreview";
 
 // Maps each (possibly duplicated) step screen to the character field it edits
@@ -145,8 +146,6 @@ export default function CharacterBuilder() {
   const [classSkillsConfirmed2, setClassSkillsConfirmed2] = useState(false);
   const [showCasaBonusModal, setShowCasaBonusModal] = useState(false);
   const [activeCasaSlot, setActiveCasaSlot] = useState("");
-  // Rolagem dos dados de vida da Origem (feita na prévia ou ao criar)
-  const [vitalRolls, setVitalRolls] = useState(null);
 
   // Raça options with vantagem/desvantagem merged from defaults
   const raceOptions = mergeRaceVantagens(STEP_DATA.raca || []);
@@ -184,6 +183,42 @@ export default function CharacterBuilder() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Atributos finais (pontos + bônus da C.A.S.A.)
+  const finalAttributes = ATTRIBUTE_ORDER.reduce((acc, k) => {
+    acc[k] = attributeTotal(character.casaBonus, character.attributePoints, k);
+    return acc;
+  }, {});
+
+  // Perícias da ficha: treino +5 nas escolhidas, +2 do Passado, +2 da passiva da C.A.S.A. principal
+  const buildSkills = (withTraining = true) => {
+    const skills = DEFAULT_SKILLS.map((s) => ({ ...s }));
+    if (withTraining) {
+      (character.trainedSkills || []).forEach((name) => {
+        const sk = matchSkill(skills, name);
+        if (sk) sk.training = TRAINED_VALUE;
+      });
+    }
+    const passadoOpt =
+      passadoOptions.find((p) => p.name === character.passado) ||
+      PASSADO_DEFAULTS.find((p) => p.name === character.passado);
+    if (passadoOpt) {
+      const bv = passadoOpt.bonus_value || 2;
+      [passadoOpt.skill_1, passadoOpt.skill_2].forEach((skillName) => {
+        if (!skillName) return;
+        const existing = matchSkill(skills, skillName);
+        if (existing) existing.bonus = (existing.bonus || 0) + bv;
+        else skills.push({ name: skillName, attribute: "CAR", training: 0, bonus: bv });
+      });
+    }
+    const casaOpt = (STEP_DATA.casa || []).find((o) => o.name === character.casa);
+    applyCasaSkillBonus(skills, casaOpt);
+    return skills;
+  };
+  const skillBonusPreview = buildSkills(false).reduce((acc, s) => {
+    if (s.bonus) acc[s.name] = s.bonus;
+    return acc;
+  }, {});
+
   // Step completion check (per visible screen, including duplicated steps)
   const completedSteps = visibleSteps.map((step) => {
     switch (step.uid) {
@@ -205,6 +240,7 @@ export default function CharacterBuilder() {
         return !!character.bond_plano && !!character.bond_circulo && !!character.bond_elemento;
       case "atributos":
         return availablePointsFor(character.origin, character.attributePoints) === 0;
+      case "pericias": return (character.trainedSkills || []).length === periciaLimit(finalAttributes, character.pericia_attr);
       case "toques": return !!character.name.trim();
       default: return false;
     }
@@ -310,7 +346,6 @@ export default function CharacterBuilder() {
     });
     setClassSkillsConfirmed(false);
     setClassSkillsConfirmed2(false);
-    setVitalRolls(null);
   };
 
   // ---- Raça flow ----
@@ -426,8 +461,8 @@ export default function CharacterBuilder() {
     }));
   };
 
-  const handleCasaBonusConfirm = (bonus) => {
-    setCharacter((prev) => ({ ...prev, casaBonus: bonus }));
+  const handleCasaBonusConfirm = (bonus, entidade) => {
+    setCharacter((prev) => ({ ...prev, casaBonus: bonus, casa_entidade: entidade || "" }));
     setShowCasaBonusModal(false);
     goToStep(currentStep + 1);
   };
@@ -514,11 +549,10 @@ export default function CharacterBuilder() {
     character,
     originOptions: STEP_DATA.origem,
     casaOptions: STEP_DATA.casa,
-    rolls: vitalRolls,
+    attributes: finalAttributes,
+    skills: buildSkills(true),
   });
-  const chosenClassAbilities = [...(character.classSkills || []), ...(character.classSkills_2 || [])].filter(
-    (s) => s.type === "habilidade"
-  );
+  const chosenClassAbilities = [...(character.classSkills || []), ...(character.classSkills_2 || [])];
 
   const handleCreate = () => {
     if (!character.name.trim()) {
@@ -529,57 +563,34 @@ export default function CharacterBuilder() {
     const charClassValue = character.char_class_2
       ? `${character.char_class} / ${character.char_class_2}`
       : character.char_class;
-    const casaValue = character.casa_2
-      ? `${character.casa} (Principal) / ${character.casa_2}`
-      : character.casa;
+    const casaMain = character.casa_entidade ? `${character.casa} (${character.casa_entidade})` : character.casa;
+    const casaValue = character.casa_2 ? `${casaMain} (Principal) / ${character.casa_2}` : casaMain;
     const raceValue = character.race_2
       ? `${character.race} / ${character.race_2}`
       : character.race;
 
-    // Skills escolhidas nos pop-ups de Classe: passivas viram perícias
-    // treinadas, habilidades viram entradas do array de abilities.
-    const allSelected = [
-      ...(character.classSkills || []),
-      ...(character.classSkills_2 || []),
-    ];
-    const selectedPassivas = allSelected.filter((s) => s.type === "passiva").map((s) => s.name);
-    const selectedHabilidades = allSelected
-      .filter((s) => s.type === "habilidade")
-      .map((s) => ({ name: s.name, cost: s.cost, ed: s.ed, damage: s.damage, description: s.description }));
-
-    const skills = DEFAULT_SKILLS.map((s) =>
-      selectedPassivas.includes(s.name) ? { ...s, training: 1 } : s
+    // Skills de Classe (livro): passivas e habilidades vão para a aba Habilidades.
+    const allSelected = [...(character.classSkills || []), ...(character.classSkills_2 || [])];
+    const classAbilities = allSelected.map((s) =>
+      s.type === "passiva"
+        ? { name: s.name, cost: 0, ed: "Passiva", damage: "—", description: s.description }
+        : { name: s.name, cost: s.cost, ed: s.ed, damage: s.damage, description: s.description }
     );
-    selectedPassivas.forEach((name) => {
-      if (!skills.find((s) => s.name === name)) {
-        skills.push({ name, attribute: "INT", training: 1, bonus: 0 });
-      }
+
+    const skills = buildSkills(true);
+
+    // Origem e C.A.S.A. entram sozinhas: PV/PS/PE, dinheiro, slots, CA e características.
+    const finalKit = startingKit({
+      character,
+      originOptions: STEP_DATA.origem,
+      casaOptions: STEP_DATA.casa,
+      attributes: finalAttributes,
+      skills,
     });
-
-    // Bônus de perícias do Passado escolhido (+2 em duas perícias)
-    const passadoOpt =
-      passadoOptions.find((p) => p.name === character.passado) ||
-      PASSADO_DEFAULTS.find((p) => p.name === character.passado);
-    if (passadoOpt) {
-      const bv = passadoOpt.bonus_value || 2;
-      [passadoOpt.skill_1, passadoOpt.skill_2].forEach((skillName) => {
-        if (!skillName) return;
-        const existing = skills.find((s) => s.name === skillName);
-        if (existing) {
-          existing.bonus = (existing.bonus || 0) + bv;
-        } else {
-          skills.push({ name: skillName, attribute: "CAR", training: 0, bonus: bv });
-        }
-      });
-    }
-
-    // Origem e C.A.S.A. entram sozinhas: dados de vida, dinheiro, slots e características.
-    const rolls = vitalRolls || rollStartingVitals(character, STEP_DATA.origem);
-    const finalKit = startingKit({ character, originOptions: STEP_DATA.origem, casaOptions: STEP_DATA.casa, rolls });
     const strip = ({ source, ...rest }) => rest;
-    const abilities = [...finalKit.traits.map(strip), ...selectedHabilidades];
+    const abilities = [...finalKit.traits.map(strip), ...classAbilities];
     const vital = (v) => ({ total: v.total, current: v.total, temp: 0 });
-    toast.success(`Vida inicial: PV ${finalKit.pv.total} · PE ${finalKit.pe.total} · PS ${finalKit.ps.total}`);
+    toast.success(`PV ${finalKit.pv.total} · PS ${finalKit.ps.total} · PE ${finalKit.pe.total} · CA ${finalKit.ca.fisica}/${finalKit.ca.magica}`);
 
     createMutation.mutate({
       name: character.name,
@@ -604,10 +615,9 @@ export default function CharacterBuilder() {
       skills,
       abilities,
       inventory: finalKit.inventory,
-      attributes: ATTRIBUTE_ORDER.reduce((acc, k) => {
-        acc[k] = attributeTotal(character.casaBonus, character.attributePoints, k);
-        return acc;
-      }, {}),
+      attributes: finalAttributes,
+      ca_physical: finalKit.ca.fisica,
+      ca_magical: finalKit.ca.magica,
       pv: vital(finalKit.pv),
       pe: vital(finalKit.pe),
       ps: vital(finalKit.ps),
@@ -747,19 +757,25 @@ export default function CharacterBuilder() {
                         }));
                       }}
                     />
+                  ) : step.id === "pericias" ? (
+                    <PericiasStep
+                      character={character}
+                      attributes={finalAttributes}
+                      bonusBySkill={skillBonusPreview}
+                      onChange={setCharacter}
+                    />
                   ) : step.id === "toques" ? (
                     <>
                       <ToquesStep character={character} onChange={setCharacter} />
                       <AutoKitPreview
                         kit={kit}
                         classAbilities={chosenClassAbilities}
-                        rolled={!!vitalRolls}
-                        onRoll={() => setVitalRolls(rollStartingVitals(character, STEP_DATA.origem))}
+                        attributes={finalAttributes}
                       />
                     </>
                   ) : null}
 
-                  {step.id !== "atributos" && step.id !== "toques" && step.id !== "raca" && step.id !== "passado" && step.id !== "vinculos" && (
+                  {step.id !== "atributos" && step.id !== "pericias" && step.id !== "toques" && step.id !== "raca" && step.id !== "passado" && step.id !== "vinculos" && (
                     <div className="mt-3 text-xs text-muted-foreground">
                       {character[selectedField] ? (
                         <span className="text-primary">✓ {character[selectedField]} selecionado</span>
@@ -812,6 +828,7 @@ export default function CharacterBuilder() {
         return (
           <CasaBonusModal
             casaName={character[field]}
+            casaOption={(STEP_DATA.casa || []).find((o) => o.name === character[field])}
             onConfirm={handleCasaBonusConfirm}
             onClose={() => setShowCasaBonusModal(false)}
           />

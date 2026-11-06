@@ -32,6 +32,18 @@ const TAB_CLS =
 
 const PANE_CLS = "data-[state=active]:animate-in data-[state=active]:fade-in-0 data-[state=active]:slide-in-from-bottom-3 duration-500";
 
+// "Shadows (SHADOW's) (Principal) / Divinus" → { casa, entidade, casa2 }
+function parseCasaField(origin, value) {
+  const [main = "", second = ""] = String(value || "").split("/").map((x) => x.trim());
+  const groups = [...main.matchAll(/\(([^)]+)\)/g)].map((m) => m[1]).filter((g) => g !== "Principal");
+  return {
+    origin,
+    casa: main.replace(/\s*\([^)]*\)/g, "").trim(),
+    entidade: groups[0] || "",
+    casa2: second.replace(/\s*\([^)]*\)/g, "").trim(),
+  };
+}
+
 export default function CharacterSheet() {
   const urlParams = new URLSearchParams(window.location.search);
   const charId = window.location.pathname.split("/character/")[1];
@@ -266,11 +278,7 @@ export default function CharacterSheet() {
             title="Habilidades"
             canAdd={canEdit}
             suggestions={[
-              ...traitAbilities({
-                origin: localChar.origin,
-                casa: (localChar.power_technique || "").split("/")[0]?.replace("(Principal)", "").trim(),
-                casa2: (localChar.power_technique || "").split("/")[1]?.trim(),
-              }),
+              ...traitAbilities(parseCasaField(localChar.origin, localChar.power_technique)),
               ...classAbilityCatalog(localChar.char_class),
             ]}
           />

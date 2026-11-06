@@ -1,38 +1,31 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Heart, Zap, Brain, Dices, Coins, Backpack, Sparkles, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { BASE_VITAL } from "@/lib/autoBuild";
+import { Heart, Zap, Brain, Coins, Backpack, Sparkles, Check, Shield, ShieldHalf } from "lucide-react";
+import CountUp from "@/components/fx/CountUp";
 
 const VITALS = [
   { key: "pv", label: "PV", icon: Heart, color: "hsl(352 85% 60%)" },
-  { key: "pe", label: "PE", icon: Zap, color: "hsl(212 85% 62%)" },
   { key: "ps", label: "PS", icon: Brain, color: "hsl(275 70% 68%)" },
+  { key: "pe", label: "PE", icon: Zap, color: "hsl(212 85% 62%)" },
 ];
 
 /**
- * Mostra, antes de criar, tudo o que entra sozinho na ficha:
- * vida/energia/sanidade da Origem (com rolagem), dinheiro, slots,
- * e as características da Origem, C.A.S.A. e habilidades de Classe.
+ * Mostra, antes de criar, tudo o que entra sozinho na ficha (regras do livro):
+ * PV/PS/PE iniciais da Origem + atributo (+ passiva da C.A.S.A.), dinheiro,
+ * slots, CA Física/Mágica e as características que vão para Habilidades.
  */
-export default function AutoKitPreview({ kit, classAbilities = [], onRoll, rolled }) {
+export default function AutoKitPreview({ kit, classAbilities = [] }) {
   if (!kit) return null;
+  const formula = (v) =>
+    [v.base, v.attr ? `${v.attr} (${v.attrVal})` : null, v.bonus ? `C.A.S.A. ${v.bonus}` : null].filter(Boolean).join(" + ");
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="st-panel st-live-border p-4 sm:p-5 mt-6"
-    >
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <div>
-          <div className="text-[10px] uppercase tracking-[0.25em] text-accent flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" /> Aplicado automaticamente
-          </div>
-          <p className="text-xs text-muted-foreground mt-1">Isso já vai preenchido na sua ficha ao clicar em Criar.</p>
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="st-panel st-live-border p-4 sm:p-5 mt-6">
+      <div className="mb-4">
+        <div className="text-[10px] uppercase tracking-[0.25em] text-accent flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5" /> Aplicado automaticamente
         </div>
-        <Button size="sm" variant={rolled ? "outline" : "default"} onClick={onRoll} className={rolled ? "border-border" : "bg-primary"}>
-          <Dices className="w-4 h-4 mr-1.5" /> {rolled ? "Rolar de novo" : "Rolar vida inicial"}
-        </Button>
+        <p className="text-xs text-muted-foreground mt-1">Calculado pelas regras do livro e preenchido na ficha ao clicar em Criar.</p>
       </div>
 
       <div className="grid grid-cols-3 gap-2">
@@ -42,31 +35,46 @@ export default function AutoKitPreview({ kit, classAbilities = [], onRoll, rolle
             <div key={key} className="rounded-xl border border-border bg-background/50 p-3 text-center">
               <Icon className="w-4 h-4 mx-auto" style={{ color }} />
               <div className="text-[10px] font-bold mt-1" style={{ color }}>{label}</div>
-              <motion.div key={v.total} initial={{ scale: 1.4, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="font-cinzel text-2xl font-bold text-foreground">
-                {v.roll ? v.total : "?"}
-              </motion.div>
-              <div className="text-[10px] text-muted-foreground font-mono">
-                {BASE_VITAL} + {v.formula || "0"}
-                {v.roll && v.roll.rolls.length > 0 && ` (${v.roll.rolls.join("+")})`}
+              <div className="font-cinzel text-2xl font-bold text-foreground">
+                {v.known ? <CountUp value={v.total} /> : "—"}
               </div>
+              <div className="text-[10px] text-muted-foreground font-mono leading-tight">{v.known ? formula(v) : "escolha a Origem"}</div>
             </div>
           );
         })}
       </div>
-      {!rolled && (
-        <p className="text-[11px] text-muted-foreground mt-2">Se você não rolar, os dados são rolados sozinhos ao criar a ficha.</p>
-      )}
 
-      {(kit.pack.coins || kit.pack.slots > 0) && (
+      <div className="grid grid-cols-2 gap-2 mt-2">
+        <div className="rounded-xl border border-border bg-background/50 p-3 flex items-center gap-3">
+          <Shield className="w-4 h-4 text-primary" />
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">CA Física</div>
+            <div className="font-cinzel text-xl font-bold text-foreground">{kit.ca.fisica}</div>
+            <div className="text-[10px] text-muted-foreground font-mono">10 + CON + Fortitude</div>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border bg-background/50 p-3 flex items-center gap-3">
+          <ShieldHalf className="w-4 h-4 text-accent" />
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">CA Mágica</div>
+            <div className="font-cinzel text-xl font-bold text-foreground">{kit.ca.magica}</div>
+            <div className="text-[10px] text-muted-foreground font-mono">10 + PE/5 + Feitiçaria</div>
+          </div>
+        </div>
+      </div>
+
+      {(kit.pack.coins || kit.slots.total > 0) && (
         <div className="flex flex-wrap gap-2 mt-4">
           {kit.pack.coins && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 text-accent text-xs px-3 py-1">
               <Coins className="w-3.5 h-3.5" /> {kit.pack.coins}
             </span>
           )}
-          {kit.pack.slots > 0 && (
+          {kit.slots.total > 0 && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border text-muted-foreground text-xs px-3 py-1">
-              <Backpack className="w-3.5 h-3.5" /> {kit.pack.slots} slots de inventário
+              <Backpack className="w-3.5 h-3.5" /> {kit.slots.total} slots ({kit.slots.base}
+              {kit.slots.attr ? ` + ${kit.slots.attr}` : ""}
+              {kit.slots.bonus ? ` + ${kit.slots.bonus} da C.A.S.A.` : ""})
             </span>
           )}
         </div>

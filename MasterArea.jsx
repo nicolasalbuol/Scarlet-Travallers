@@ -89,7 +89,7 @@ function Vault({ onUnlock }) {
                 />
               </div>
               <Button type="submit" disabled={opening || !password} className="w-full h-11 font-cinzel tracking-[0.25em] bg-primary hover:bg-primary/90">
-                {opening ? "ROMPENDO O SELO..." : "ABRIR O ARQUIVO"}
+                {opening ? "ABRINDO..." : "ABRIR O ARQUIVO"}
               </Button>
             </form>
           )}

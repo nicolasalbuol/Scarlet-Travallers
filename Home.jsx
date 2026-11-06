@@ -64,7 +64,7 @@ export default function Home() {
             className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-primary"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            Fenda aberta · RPG de mesa
+            Sistema de RPG de mesa
           </motion.div>
 
           <h1 className="mt-5 leading-[0.9]">
@@ -170,7 +170,7 @@ export default function Home() {
         ) : characters.length === 0 ? (
           <div className="st-panel text-center py-14 text-muted-foreground">
             <ScrollText className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">Nenhuma ficha ainda. Toda viagem começa com um nome.</p>
+            <p className="text-sm">Nenhuma ficha ainda. A viagem começa agora.</p>
             <Link to="/characters?new=true">
               <Button variant="outline" className="mt-5 border-primary/50 text-primary hover:bg-primary/10">
                 <Plus className="w-4 h-4 mr-2" /> Criar primeira ficha
