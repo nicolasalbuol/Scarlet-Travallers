@@ -47,7 +47,7 @@ export default function PericiasStep({ character, attributes, bonusBySkill = {},
               onClick={() => setBasis(b)}
               className={cn("relative px-3 py-1.5 rounded-md text-xs transition-colors", basis === b ? "text-primary-foreground" : "text-muted-foreground")}
             >
-              {basis === b && <motion.span layoutId="st-pericia-basis" className="absolute inset-0 rounded-md bg-primary" />}
+              {basis === b && <span className="absolute inset-0 rounded-md bg-primary" />}
               <span className="relative">Usar {ATTRIBUTE_NAMES[b]}</span>
             </button>
           ))}
