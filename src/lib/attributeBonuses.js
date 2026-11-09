@@ -3,7 +3,9 @@ export const BASE_POINTS = 7;
 // Pontos extras de atributo por Origem
 export const ORIGIN_FREE_POINTS = { Zeta: 1, Alpha: 3, Beta: 2, "Ômega": 0, Delta: 0 };
 
-// Limite máximo de cada atributo DURANTE a montagem da ficha
+// Todo atributo começa em 1 (regra da mesa).
+export const BASE_ATTRIBUTE = 1;
+// Máximo da base (1 + pontos distribuídos). O bônus da C.A.S.A. soma por cima e pode passar disso.
 export const ATTRIBUTE_MAX = 3;
 
 const ATTR_KEYS = ["FOR", "DES", "CON", "INT", "SAB", "CAR"];
@@ -23,7 +25,12 @@ export function availablePointsFor(origin, points) {
   return total - sumPoints(points);
 }
 
-// Total final de um atributo = bônus da C.A.S.A. + pontos do usuário
+// Base de um atributo = 1 + pontos do usuário (limitada a ATTRIBUTE_MAX)
+export function baseValue(points, key) {
+  return BASE_ATTRIBUTE + (points?.[key] || 0);
+}
+
+// Total final de um atributo = base + bônus da C.A.S.A.
 export function attributeTotal(casaBonus, points, key) {
-  return (casaBonus?.[key] || 0) + (points?.[key] || 0);
+  return baseValue(points, key) + (casaBonus?.[key] || 0);
 }
