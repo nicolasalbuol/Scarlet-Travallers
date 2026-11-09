@@ -709,7 +709,7 @@ export default function CharacterBuilder() {
                         }))
                       }
                     />
-                  ) : STEP_DATA[step.id] ? (
+                  ) : STEP_DATA[step.id]?.length ? (
                     <SelectionSection
                       options={
                         step.uid === "classe_2"
