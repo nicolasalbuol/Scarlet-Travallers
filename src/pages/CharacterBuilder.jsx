@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
@@ -632,12 +632,10 @@ export default function CharacterBuilder() {
 
       {/* Current step screen (only the active step is visible) */}
       <div className="max-w-4xl mx-auto px-4 py-6">
-        <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -24 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
           >
             {(() => {
@@ -761,7 +759,6 @@ export default function CharacterBuilder() {
               );
             })()}
           </motion.div>
-        </AnimatePresence>
       </div>
 
       {/* Pop-up de Vantagem/Desvantagem (Raça Híbrida) */}
