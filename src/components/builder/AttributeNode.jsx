@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
-import { ATTRIBUTE_MAX } from "@/lib/attributeBonuses";
 import { cn } from "@/lib/utils";
 
 export default function AttributeNode({
@@ -14,9 +13,8 @@ export default function AttributeNode({
   onAdd,
   onRemove,
   position,
+  atMax,
 }) {
-  const atMax = total >= ATTRIBUTE_MAX;
-
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2" style={position}>
       <div className="relative">

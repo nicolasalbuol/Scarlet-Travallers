@@ -1,5 +1,5 @@
 import React from "react";
-import { ATTRIBUTE_MAX } from "@/lib/attributeBonuses";
+import { ATTRIBUTE_MAX, baseValue, attributeTotal } from "@/lib/attributeBonuses";
 import { ATTRIBUTE_NAMES } from "@/lib/builderData";
 import { cn } from "@/lib/utils";
 import AttributeNode from "./AttributeNode";
@@ -20,12 +20,10 @@ const NODE_POSITIONS = {
 export default function AttributesStep({ points, casaBonus, availablePoints, onChange }) {
   const adjust = (key, delta) => {
     const current = points?.[key] || 0;
-    const casa = casaBonus?.[key] || 0;
-    const total = casa + current;
     const newVal = current + delta;
     if (delta > 0) {
       if (availablePoints <= 0) return;
-      if (total >= ATTRIBUTE_MAX) return;
+      if (baseValue(points, key) >= ATTRIBUTE_MAX) return;
     }
     if (delta < 0 && newVal < 0) return;
     onChange({ ...points, [key]: newVal });
@@ -56,7 +54,8 @@ export default function AttributesStep({ points, casaBonus, availablePoints, onC
         {DIAGRAM_ORDER.map((key) => {
           const casa = casaBonus?.[key] || 0;
           const user = points?.[key] || 0;
-          const total = casa + user;
+          const total = attributeTotal(casaBonus, points, key);
+          const atMax = baseValue(points, key) >= ATTRIBUTE_MAX;
 
           return (
             <AttributeNode
@@ -65,7 +64,8 @@ export default function AttributesStep({ points, casaBonus, availablePoints, onC
               name={ATTRIBUTE_NAMES[key]}
               total={total}
               casa={casa}
-              canAdd={availablePoints > 0 && total < ATTRIBUTE_MAX}
+              atMax={atMax}
+              canAdd={availablePoints > 0 && !atMax}
               canRemove={user > 0}
               onAdd={() => adjust(key, 1)}
               onRemove={() => adjust(key, -1)}
