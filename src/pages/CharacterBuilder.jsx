@@ -15,7 +15,6 @@ import {
 } from "@/lib/builderData";
 import {
   ORIGIN_FREE_POINTS,
-  ATTRIBUTE_MAX,
   emptyPoints,
   availablePointsFor,
   attributeTotal,
@@ -251,32 +250,6 @@ export default function CharacterBuilder() {
     [character.origin, character.attributePoints]
   );
 
-  // Ao aplicar/trocar o bônus da C.A.S.A., nenhum atributo pode passar de 3:
-  // o excedente é ajustado e os pontos voltam para a reserva.
-  useEffect(() => {
-    setCharacter((prev) => {
-      const casa = prev.casaBonus || {};
-      const points = { ...(prev.attributePoints || {}) };
-      let changed = false;
-      ATTRIBUTE_ORDER.forEach((key) => {
-        const over = (casa[key] || 0) + (points[key] || 0) - ATTRIBUTE_MAX;
-        if (over > 0) {
-          points[key] = Math.max(0, (points[key] || 0) - over);
-          changed = true;
-        }
-      });
-      if (!changed) return prev;
-      return {
-        ...prev,
-        attributePoints: points,
-        attributes: ATTRIBUTE_ORDER.reduce((acc, k) => {
-          acc[k] = attributeTotal(casa, points, k);
-          return acc;
-        }, {}),
-      };
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [character.casaBonus]);
 
   // Remove seleções que deixaram de cumprir o pré-requisito ao mudar escolhas anteriores
   useEffect(() => {
