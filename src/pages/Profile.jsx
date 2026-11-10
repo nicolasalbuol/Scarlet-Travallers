@@ -9,23 +9,17 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { useTheme, setTheme } from "@/lib/theme";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
-  const [darkMode, setDarkMode] = useState(true);
+  const darkMode = useTheme() === "dark";
+  const setDarkMode = (on) => setTheme(on ? "dark" : "light");
   const [language, setLanguage] = useState("pt-BR");
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
 
   const { data: characters } = useQuery({
     queryKey: ["characters"],
