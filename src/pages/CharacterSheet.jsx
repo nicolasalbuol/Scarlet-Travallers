@@ -21,11 +21,12 @@ import LoreTab from "@/components/sheet/LoreTab";
 import InventoryTab from "@/components/sheet/InventoryTab";
 import InvocationsTab from "@/components/sheet/InvocationsTab";
 import WeaponsTab from "@/components/sheet/WeaponsTab";
+import CasaTab from "@/components/sheet/CasaTab";
 import RollingsTab from "@/components/sheet/RollingsTab";
 import DiceRollModal from "@/components/dice/DiceRollModal";
 import ShareModal from "@/components/sheet/ShareModal";
 import { useAuth } from "@/lib/AuthContext";
-import { classAbilityCatalog, traitAbilities } from "@/lib/autoBuild";
+import { classAbilityCatalog, traitAbilities, startingKit } from "@/lib/autoBuild";
 
 const TAB_CLS =
   "flex-shrink-0 text-xs px-3 py-2.5 rounded-none rounded-t-lg border-b-2 border-transparent text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_8px_20px_-10px_hsl(161_38%_50%/0.9)]";
@@ -96,7 +97,14 @@ export default function CharacterSheet() {
   const [localChar, setLocalChar] = useState(null);
 
   useEffect(() => {
-    if (character) setLocalChar({ ...character });
+    if (!character) return;
+    // Fichas antigas: a perícia "Disciplina" (erro do corretor) vira Diplomacia.
+    const skills = character.skills || [];
+    const hasDiplo = skills.some((s) => s.name === "Diplomacia");
+    const fixed = skills
+      .filter((s) => !(s.name === "Disciplina" && hasDiplo))
+      .map((s) => (s.name === "Disciplina" ? { ...s, name: "Diplomacia", attribute: "CAR" } : s));
+    setLocalChar({ ...character, skills: fixed });
   }, [character]);
 
   useEffect(() => {
@@ -129,6 +137,34 @@ export default function CharacterSheet() {
     const updated = { ...localChar, [field]: value };
     setLocalChar(updated);
     debouncedSave(updated);
+  };
+
+  // Recalcula PV/PS/PE e CA pelas regras do livro com os atributos e perícias atuais.
+  // O dano sofrido é mantido: o valor atual sobe/desce junto com o total.
+  const recalcFromBook = () => {
+    const c = parseCasaField(localChar.origin, localChar.power_technique);
+    const kit = startingKit({
+      character: { ...c, casa_2: c.casa2, casa_entidade: c.entidade },
+      attributes: localChar.attributes || {},
+      skills: localChar.skills || [],
+    });
+    const vital = (key) => {
+      const old = localChar[key] || {};
+      const total = kit[key].total;
+      const current = Math.max(0, (old.current ?? total) + (total - (old.total ?? total)));
+      return { ...old, total, current };
+    };
+    const updated = {
+      ...localChar,
+      pv: vital("pv"),
+      ps: vital("ps"),
+      pe: vital("pe"),
+      ca_physical: kit.ca.fisica,
+      ca_magical: kit.ca.magica,
+    };
+    setLocalChar(updated);
+    debouncedSave(updated);
+    toast.success(`PV ${kit.pv.total} · PS ${kit.ps.total} · PE ${kit.pe.total} · CA ${kit.ca.fisica}/${kit.ca.magica}`);
   };
 
   const updateNested = (path, value) => {
@@ -231,6 +267,7 @@ export default function CharacterSheet() {
             <TabsTrigger value="skills" className={TAB_CLS}>Perícias</TabsTrigger>
             <TabsTrigger value="mental" className={TAB_CLS}>Mental</TabsTrigger>
             <TabsTrigger value="race" className={TAB_CLS}>Raça</TabsTrigger>
+            <TabsTrigger value="casa" className={TAB_CLS}>C.A.S.A.</TabsTrigger>
             <TabsTrigger value="invocations" className={TAB_CLS}>Invocações</TabsTrigger>
             <TabsTrigger value="rituals" className={TAB_CLS}>Rituais</TabsTrigger>
             <TabsTrigger value="abilities" className={TAB_CLS}>Habilidades</TabsTrigger>
@@ -259,6 +296,14 @@ export default function CharacterSheet() {
         </TabsContent>
         <TabsContent className={PANE_CLS} value="race">
           <RaceTab character={localChar} editMode={editMode} updateField={updateField} />
+        </TabsContent>
+        <TabsContent className={PANE_CLS} value="casa">
+          <CasaTab
+            casa={parseCasaField(localChar.origin, localChar.power_technique)}
+            bond={localChar.elemental_bond}
+            canEdit={canEdit}
+            onRecalc={recalcFromBook}
+          />
         </TabsContent>
         <TabsContent className={PANE_CLS} value="invocations">
           <InvocationsTab
