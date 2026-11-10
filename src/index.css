@@ -238,6 +238,21 @@
 }
 .animate-fail { animation: failGlow 1s ease-in-out infinite; }
 
+/* Celular: corta os efeitos mais caros para a GPU e evita zoom ao digitar */
+@media (max-width: 767px), (pointer: coarse) {
+  body { background-attachment: scroll; -webkit-tap-highlight-color: transparent; }
+  .st-panel {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: linear-gradient(180deg, hsl(161 18% 8% / 0.95), hsl(161 20% 5% / 0.95));
+  }
+  .st-grain::after { display: none; }
+  .backdrop-blur-xl, .backdrop-blur-sm, .backdrop-blur { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+@media (pointer: coarse) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
 /* Respeita quem pede menos movimento */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
