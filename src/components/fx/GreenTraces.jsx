@@ -23,8 +23,10 @@ function useViewport() {
   return size;
 }
 
-export default function GreenTraces({ count = 9 }) {
+export default function GreenTraces({ count: wanted = 9 }) {
   const { w, h } = useViewport();
+  const mobile = w < 768;
+  const count = mobile ? Math.min(5, wanted) : wanted;
   const paths = useMemo(() => {
     const rnd = (a, b) => a + Math.random() * (b - a);
     const unit = Math.min(w, h);
@@ -63,7 +65,7 @@ export default function GreenTraces({ count = 9 }) {
             strokeWidth="2"
             strokeLinecap="round"
             pathLength="100"
-            filter="url(#st-trace-glow)"
+            filter={mobile ? undefined : "url(#st-trace-glow)"}
             style={{ strokeDasharray: "5 95", animation: `st-trace-run ${p.dur}s linear ${p.delay}s infinite` }}
           />
           <circle

@@ -24,7 +24,7 @@ export default function ScarletField() {
     const rand = (a, b) => a + Math.random() * (b - a);
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, finePointer ? 2 : 1.25);
       w = window.innerWidth;
       h = window.innerHeight;
       canvas.width = w * dpr;
@@ -32,9 +32,9 @@ export default function ScarletField() {
       canvas.style.width = w + "px";
       canvas.style.height = h + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const area = (w * h) / 1e6;
-      embers = Array.from({ length: Math.round(40 * area + 20) }, () => newEmber(true));
-      nodes = Array.from({ length: Math.round(18 * area + 10) }, () => ({
+      const area = ((w * h) / 1e6) * (finePointer ? 1 : 0.5);
+      embers = Array.from({ length: Math.round(40 * area + (finePointer ? 20 : 10)) }, () => newEmber(true));
+      nodes = Array.from({ length: Math.round(18 * area + (finePointer ? 10 : 6)) }, () => ({
         x: rand(0, w), y: rand(0, h), vx: rand(-0.15, 0.15), vy: rand(-0.15, 0.15), r: rand(0.8, 1.8),
       }));
     };
