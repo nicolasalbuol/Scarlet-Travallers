@@ -74,7 +74,8 @@ export function parseCasaPassiva(opt) {
 }
 
 /** Nomes do livro que variam um pouco do nome da perícia na ficha. */
-const SKILL_ALIASES = { fortitudo: "fortitude", reflexo: "reflexos" };
+// "Disciplina" era erro do corretor: a perícia do livro é Diplomacia.
+const SKILL_ALIASES = { fortitudo: "fortitude", reflexo: "reflexos", disciplina: "diplomacia" };
 export function matchSkill(skills, name) {
   const n = SKILL_ALIASES[norm(name)] || norm(name);
   return (skills || []).find((s) => norm(s.name) === n);

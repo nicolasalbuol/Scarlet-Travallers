@@ -33,7 +33,7 @@ export const PASSADO_CATEGORIES = [
 // Passados padrão (usados quando não há registros na entidade Passado)
 export const PASSADO_DEFAULTS = [
   // Convocado
-  { name: "Protegido da Facção", category: "convocado", description: "Cresceu sob a tutela de uma facção que percebeu seu potencial cedo. Foi treinado desde a marca dos 10 anos.", skill_1: "Disciplina", skill_2: "Atualidades", bonus_value: 2, order: 0 },
+  { name: "Protegido da Facção", category: "convocado", description: "Cresceu sob a tutela de uma facção que percebeu seu potencial cedo. Foi treinado desde a marca dos 10 anos.", skill_1: "Diplomacia", skill_2: "Atualidades", bonus_value: 2, order: 0 },
   { name: "Herói Involuntário", category: "convocado", description: "Salvou pessoas durante um incidente sobrenatural e chamou a atenção da HUNTER.", skill_1: "Reflexos", skill_2: "Integridade", bonus_value: 2, order: 1 },
   { name: "Prodígio Observado", category: "convocado", description: "Agentes o vigiaram por anos antes do recrutamento. Ele descobriu isso tarde demais.", skill_1: "Percepção", skill_2: "Intuição", bonus_value: 2, order: 2 },
   { name: "Herdeiro de Linhagem", category: "convocado", description: "Vem de uma família tradicional de agentes, e a convocação foi quase um destino.", skill_1: "História", skill_2: "Vontade", bonus_value: 2, order: 3 },
@@ -55,7 +55,7 @@ export const PASSADO_DEFAULTS = [
   // Mundano
   { name: "Amnésico", category: "mundano", description: "Acordou sem lembrar de quem era e foi arrastado para uma missão da HUNTER. Seu corpo reage antes da mente, e talvez o passado esteja ligado ao sobrenatural.", skill_1: "Reflexos", skill_2: "Integridade", bonus_value: 2, order: 17 },
   { name: "Prisioneiro Sentenciado", category: "mundano", description: "Condenado por seus crimes, recebeu uma escolha: cumprir pena ou servir como agente. A HUNTER o vigia de perto, e ele ainda não confia em ninguém.", skill_1: "Intimidação", skill_2: "Fortitude", bonus_value: 2, order: 18 },
-  { name: "Prisioneiro Arrependido", category: "mundano", description: "Errou feio e pagou o preço. Ao sair, decidiu usar o poder para ajudar quem precisa e se redimir, mesmo sem ninguém exigir isso.", skill_1: "Vontade", skill_2: "Disciplina", bonus_value: 2, order: 19 },
+  { name: "Prisioneiro Arrependido", category: "mundano", description: "Errou feio e pagou o preço. Ao sair, decidiu usar o poder para ajudar quem precisa e se redimir, mesmo sem ninguém exigir isso.", skill_1: "Vontade", skill_2: "Diplomacia", bonus_value: 2, order: 19 },
   { name: "Testemunha Acidental", category: "mundano", description: "Viu algo que não devia durante um ataque sobrenatural. Em vez de ser silenciado, acabou ajudando na missão e foi ficando.", skill_1: "Percepção", skill_2: "Memória", bonus_value: 2, order: 20 },
   { name: "Socorrista Voluntário", category: "mundano", description: "Paramédico, bombeiro ou voluntário de ONG que cuidou de vítimas de ataques e acabou se envolvendo com os agentes.", skill_1: "Medicina", skill_2: "Atletismo", bonus_value: 2, order: 21 },
   { name: "Curioso de Mistérios", category: "mundano", description: "Criador de conteúdo ou fã de teorias que foi atrás de um caso real e acabou no meio de uma missão.", skill_1: "Atualidades", skill_2: "Investigação", bonus_value: 2, order: 22 },

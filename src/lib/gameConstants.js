@@ -6,7 +6,6 @@ export const DEFAULT_SKILLS = [
   { name: "Pontaria", attribute: "DES", training: 0, bonus: 0 },
   { name: "Reflexos", attribute: "DES", training: 0, bonus: 0 },
   { name: "Fortitude", attribute: "CON", training: 0, bonus: 0 },
-  { name: "Disciplina", attribute: "SAB", training: 0, bonus: 0 },
   { name: "Integridade", attribute: "SAB", training: 0, bonus: 0 },
   { name: "Intuição", attribute: "SAB", training: 0, bonus: 0 },
   { name: "Medicina", attribute: "SAB", training: 0, bonus: 0 },

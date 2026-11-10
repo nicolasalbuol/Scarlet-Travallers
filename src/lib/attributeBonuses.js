@@ -3,10 +3,10 @@ export const BASE_POINTS = 7;
 // Pontos extras de atributo por Origem
 export const ORIGIN_FREE_POINTS = { Zeta: 1, Alpha: 3, Beta: 2, "Ômega": 0, Delta: 0 };
 
-// Todo atributo começa em 1 (regra da mesa).
-export const BASE_ATTRIBUTE = 1;
-// Máximo da base (1 + pontos distribuídos). O bônus da C.A.S.A. soma por cima e pode passar disso.
-export const ATTRIBUTE_MAX = 3;
+// Todo atributo começa em 0 (regra da mesa).
+export const BASE_ATTRIBUTE = 0;
+// Máximo da base (pontos distribuídos). O bônus da C.A.S.A. soma por cima e pode passar disso.
+export const ATTRIBUTE_MAX = 4;
 
 const ATTR_KEYS = ["FOR", "DES", "CON", "INT", "SAB", "CAR"];
 
@@ -25,7 +25,7 @@ export function availablePointsFor(origin, points) {
   return total - sumPoints(points);
 }
 
-// Base de um atributo = 1 + pontos do usuário (limitada a ATTRIBUTE_MAX)
+// Base de um atributo = pontos do usuário (limitada a ATTRIBUTE_MAX)
 export function baseValue(points, key) {
   return BASE_ATTRIBUTE + (points?.[key] || 0);
 }
