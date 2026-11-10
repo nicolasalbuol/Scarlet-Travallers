@@ -23,6 +23,7 @@ import Campaigns from '@/pages/Campaigns';
 import CampaignDetail from '@/pages/CampaignDetail';
 import MasterArea from '@/pages/MasterArea';
 import Sigil from '@/components/fx/Sigil';
+import { useTheme } from '@/lib/theme';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin, user, recovering } = useAuth();
@@ -73,6 +74,7 @@ const AuthenticatedApp = () => {
 };
 
 function App() {
+  const theme = useTheme();
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
@@ -80,7 +82,7 @@ function App() {
           <AuthenticatedApp />
         </Router>
         <Toaster />
-        <SonnerToaster theme="dark" position="top-center" richColors closeButton />
+        <SonnerToaster theme={theme} position="top-center" richColors closeButton />
       </QueryClientProvider>
     </AuthProvider>
   )

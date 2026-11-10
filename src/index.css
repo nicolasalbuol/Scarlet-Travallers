@@ -15,25 +15,32 @@
     --font-inter: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-    --background: 161 22% 4%;
-    --foreground: 150 14% 92%;
-    --card: 161 18% 7%;
-    --card-foreground: 150 14% 92%;
-    --popover: 161 20% 6%;
-    --popover-foreground: 150 14% 92%;
-    --primary: 161 19% 46%;
-    --primary-foreground: 160 30% 6%;
-    --secondary: 161 16% 12%;
-    --secondary-foreground: 150 14% 92%;
-    --muted: 161 14% 11%;
-    --muted-foreground: 155 8% 62%;
-    --accent: 152 42% 66%;
-    --accent-foreground: 161 22% 6%;
-    --destructive: 14 88% 55%;
-    --destructive-foreground: 30 30% 97%;
-    --border: 161 32% 17%;
-    --input: 161 26% 16%;
-    --ring: 161 19% 46%;
+    --background: 150 22% 96%;
+    --foreground: 161 30% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 161 30% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 161 30% 10%;
+    --primary: 161 22% 38%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 155 18% 90%;
+    --secondary-foreground: 161 30% 12%;
+    --muted: 155 18% 92%;
+    --muted-foreground: 161 10% 36%;
+    --accent: 161 34% 30%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 46%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 155 18% 80%;
+    --input: 155 18% 84%;
+    --ring: 161 22% 38%;
+    --panel-from: 0 0% 100% / 0.92;
+    --panel-to: 150 25% 97% / 0.92;
+    --nav-bg: 0 0% 100% / 0.9;
+    --glow-a: 161 38% 40% / 0.10;
+    --glow-b: 152 50% 40% / 0.06;
+    --trace: 161 40% 34%;
+    --trace-faint: 161 25% 40% / 0.14;
     --chart-1: 161 19% 46%;
     --chart-2: 152 42% 66%;
     --chart-3: 161 38% 38%;
@@ -54,7 +61,7 @@
     --gold: 152 42% 66%;
   }
 
-  /* O site é sempre escuro; .dark repete os mesmos valores. */
+  /* Tema escuro (padrão). O claro fica no :root acima. */
   .dark {
     --background: 161 22% 4%;
     --foreground: 150 14% 92%;
@@ -75,6 +82,13 @@
     --border: 161 32% 17%;
     --input: 161 26% 16%;
     --ring: 161 19% 46%;
+    --panel-from: 161 18% 8% / 0.82;
+    --panel-to: 161 20% 5% / 0.82;
+    --nav-bg: 161 20% 5% / 0.88;
+    --glow-a: 161 38% 30% / 0.18;
+    --glow-b: 152 50% 40% / 0.08;
+    --trace: 152 50% 66%;
+    --trace-faint: 161 30% 46% / 0.16;
   }
 }
 
@@ -83,14 +97,17 @@
     @apply border-border outline-ring/50;
   }
   html {
-    @apply dark;
     background: hsl(var(--background));
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
   }
   body {
     @apply bg-background text-foreground;
     background:
-      radial-gradient(1200px 600px at 85% -10%, hsl(161 38% 30% / 0.18), transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, hsl(152 50% 40% / 0.08), transparent 60%),
+      radial-gradient(1200px 600px at 85% -10%, hsl(var(--glow-a)), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, hsl(var(--glow-b)), transparent 60%),
       hsl(var(--background));
     background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
@@ -122,7 +139,7 @@
   /* Painel de vidro escuro com borda viva */
   .st-panel {
     position: relative;
-    background: linear-gradient(180deg, hsl(161 18% 8% / 0.82), hsl(161 20% 5% / 0.82));
+    background: linear-gradient(180deg, hsl(var(--panel-from)), hsl(var(--panel-to)));
     border: 1px solid hsl(var(--border));
     border-radius: var(--radius);
     backdrop-filter: blur(10px);
@@ -148,6 +165,11 @@
     z-index: -1;
     pointer-events: none;
   }
+
+  html:not(.dark) .text-scarlet-gradient {
+    background-image: linear-gradient(100deg, hsl(161 35% 16%) 0%, hsl(161 30% 34%) 40%, hsl(152 40% 32%) 60%, hsl(161 35% 16%) 100%);
+  }
+  html:not(.dark) .st-grain::after { opacity: 0.035; }
 
   /* Linhas de varredura (dossiê) */
   .st-scanlines {
@@ -244,7 +266,7 @@
   .st-panel {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background: linear-gradient(180deg, hsl(161 18% 8% / 0.95), hsl(161 20% 5% / 0.95));
+    background: hsl(var(--card));
   }
   .st-grain::after { display: none; }
   .backdrop-blur-xl, .backdrop-blur-sm, .backdrop-blur { backdrop-filter: none; -webkit-backdrop-filter: none; }
