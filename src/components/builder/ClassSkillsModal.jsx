@@ -24,7 +24,7 @@ export default function ClassSkillsModal({
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-card border border-border rounded-2xl p-6 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto"
+        className="bg-card border border-border rounded-2xl p-4 sm:p-6 w-full max-w-lg shadow-2xl max-h-[90dvh] overflow-y-auto"
       >
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-cinzel text-lg font-bold text-primary">Escolher Skill</h3>

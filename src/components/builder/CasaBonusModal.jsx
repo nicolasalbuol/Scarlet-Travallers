@@ -52,7 +52,7 @@ function EntityPicker({ casaName, entidades, onConfirm, onClose }) {
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="st-panel max-w-lg w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div className="st-panel max-w-lg w-full p-4 sm:p-6 space-y-4 max-h-[90dvh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <h3 className="font-cinzel text-lg font-bold text-primary">Entidade da C.A.S.A.</h3>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Fechar">
@@ -130,7 +130,7 @@ function FreeBonusModal({ casaName, onConfirm, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-card border border-border rounded-xl max-w-md w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div className="bg-card border border-border rounded-xl max-w-md w-full p-4 sm:p-6 space-y-4 max-h-[90dvh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <h3 className="font-cinzel text-lg font-bold text-primary">Bônus de Atributo da C.A.S.A.</h3>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
