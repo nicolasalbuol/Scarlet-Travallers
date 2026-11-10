@@ -26,7 +26,7 @@ export default function Sigil({ size = 220, showLogo = true, draw = true, classN
 
         <g style={{ transformOrigin: "100px 100px", animation: "st-spin 40s linear infinite" }}>
           <circle cx="100" cy="100" r="94" fill="none" stroke="hsl(152 50% 58%)" strokeOpacity="0.35" strokeWidth="0.6" strokeDasharray="1 4" />
-          <text fill="hsl(161 38% 60%)" fillOpacity="0.75" fontSize="8.5" letterSpacing="3.2">
+          <text fill="hsl(var(--trace))" fillOpacity="0.75" fontSize="8.5" letterSpacing="3.2">
             <textPath href="#st-rune-path">{runes.join(" ")}</textPath>
           </text>
         </g>
@@ -36,7 +36,7 @@ export default function Sigil({ size = 220, showLogo = true, draw = true, classN
           <circle cx="100" cy="100" r="68" fill="none" stroke="hsl(152 50% 58%)" strokeOpacity="0.4" strokeWidth="0.5" strokeDasharray="6 3 1 3" />
           {Array.from({ length: 12 }).map((_, i) => {
             const a = (i / 12) * Math.PI * 2;
-            return <circle key={i} cx={100 + 72 * Math.cos(a)} cy={100 + 72 * Math.sin(a)} r="1.6" fill="hsl(152 50% 65%)" />;
+            return <circle key={i} cx={100 + 72 * Math.cos(a)} cy={100 + 72 * Math.sin(a)} r="1.6" fill="hsl(var(--trace))" />;
           })}
         </g>
 

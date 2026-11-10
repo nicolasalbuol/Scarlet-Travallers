@@ -57,11 +57,11 @@ export default function GreenTraces({ count: wanted = 9 }) {
       </defs>
       {paths.map((p, i) => (
         <g key={i}>
-          <path d={p.d} fill="none" stroke="hsl(161 30% 46% / 0.16)" strokeWidth="1" />
+          <path d={p.d} fill="none" stroke="hsl(var(--trace-faint))" strokeWidth="1" />
           <path
             d={p.d}
             fill="none"
-            stroke="hsl(152 50% 66%)"
+            stroke="hsl(var(--trace))"
             strokeWidth="2"
             strokeLinecap="round"
             pathLength="100"
@@ -72,7 +72,7 @@ export default function GreenTraces({ count: wanted = 9 }) {
             cx={p.end.x}
             cy={p.end.y}
             r="2.5"
-            fill="hsl(152 50% 70%)"
+            fill="hsl(var(--trace))"
             style={{ animation: `st-trace-blink ${p.dur / 2}s ease-in-out ${p.delay}s infinite` }}
           />
         </g>
