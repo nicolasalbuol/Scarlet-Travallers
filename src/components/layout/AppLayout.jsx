@@ -99,7 +99,7 @@ export default function AppLayout() {
         </aside>
 
         {/* Conteúdo */}
-        <main className="flex-1 min-w-0 pb-24 xl:pb-0">
+        <main className="flex-1 min-w-0 pb-[calc(6.5rem+env(safe-area-inset-bottom))] xl:pb-0">
           <motion.div
             key={location.pathname}
             initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
@@ -112,15 +112,15 @@ export default function AppLayout() {
       </div>
 
       {/* Navegação inferior (celular) */}
-      <nav className="xl:hidden fixed bottom-3 left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(161_20%_5%/0.88)] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(161_38%_30%/0.6)]">
-        <div className="flex items-stretch justify-between px-1 py-1">
+      <nav className="xl:hidden fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(161_20%_5%/0.88)] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(161_38%_30%/0.6)]">
+        <div className="flex items-stretch justify-between px-1 py-1 overflow-x-auto [scrollbar-width:none]">
           {items.map((item) => {
             const isActive = isActivePath(item.path);
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`relative flex-1 flex flex-col items-center gap-0.5 py-2 rounded-xl transition-colors ${
+                className={`relative flex-1 min-w-[48px] flex flex-col items-center gap-0.5 py-2 rounded-xl transition-colors touch-manipulation ${
                   isActive ? "text-primary" : "text-muted-foreground"
                 }`}
               >
@@ -132,7 +132,7 @@ export default function AppLayout() {
                   />
                 )}
                 <item.icon className={`relative w-5 h-5 ${isActive ? "stroke-[2.4]" : ""}`} />
-                <span className="relative text-[9.5px] font-medium">{item.label}</span>
+                <span className="relative text-[9.5px] font-medium whitespace-nowrap">{item.label}</span>
               </Link>
             );
           })}
