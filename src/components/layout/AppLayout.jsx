@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Home, BookOpen, ScrollText, User, Flag, Shield, Crown } from "lucide-react";
+import { Home, BookOpen, ScrollText, User, Flag, Shield, Crown, Sun, Moon } from "lucide-react";
+import { useTheme, toggleTheme } from "@/lib/theme";
 import { motion } from "framer-motion";
 import { useAuth } from "@/lib/AuthContext";
 import ScarletField from "@/components/fx/ScarletField";
@@ -21,6 +22,7 @@ const NAV_ITEMS = [
 export default function AppLayout() {
   const location = useLocation();
   const { user } = useAuth();
+  const theme = useTheme();
   const isAdmin = user?.role === "admin";
   const isActivePath = (path) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
@@ -35,7 +37,7 @@ export default function AppLayout() {
 
       <div className="flex flex-1 relative z-10">
         {/* Barra lateral (desktop) */}
-        <aside className="hidden xl:flex flex-col w-72 shrink-0 sticky top-0 h-screen border-r border-border/70 bg-[hsl(161_22%_4%/0.72)] backdrop-blur-xl px-5 py-7">
+        <aside className="hidden xl:flex flex-col w-72 shrink-0 sticky top-0 h-screen border-r border-border/70 bg-background/80 backdrop-blur-xl px-5 py-7">
           <Link to="/" className="flex items-center gap-3 mb-10 group">
             <div className="relative">
               <span className="absolute -inset-1 rounded-full bg-primary/40 blur-md opacity-60 group-hover:opacity-100 transition-opacity" />
@@ -95,6 +97,13 @@ export default function AppLayout() {
               Sistema de Izumi Yoshikawa
             </p>
             <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground/40 mt-1">{SITE_VERSION}</p>
+            <button
+              onClick={toggleTheme}
+              className="mt-4 flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {theme === "dark" ? "Modo claro" : "Modo escuro"}
+            </button>
           </div>
         </aside>
 
@@ -112,7 +121,7 @@ export default function AppLayout() {
       </div>
 
       {/* Navegação inferior (celular) */}
-      <nav className="xl:hidden fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(161_20%_5%/0.88)] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(161_38%_30%/0.6)]">
+      <nav className="xl:hidden fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(var(--nav-bg))] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(161_38%_30%/0.6)]">
         <div className="flex items-stretch justify-between px-1 py-1 overflow-x-auto [scrollbar-width:none]">
           {items.map((item) => {
             const isActive = isActivePath(item.path);
