@@ -16,7 +16,7 @@ function SpinningD20({ rolling, value, tone = "default" }) {
     const id = setInterval(() => setFace(1 + Math.floor(Math.random() * 20)), 55);
     return () => clearInterval(id);
   }, [rolling, value]);
-  const stroke = tone === "crit" ? "hsl(152 50% 65%)" : tone === "fail" ? "hsl(14 88% 58%)" : "hsl(161 38% 58%)";
+  const stroke = tone === "crit" ? "hsl(var(--accent))" : tone === "fail" ? "hsl(14 88% 58%)" : "hsl(var(--primary))";
   return (
     <motion.div
       className="relative w-28 h-28 mx-auto"
@@ -24,7 +24,7 @@ function SpinningD20({ rolling, value, tone = "default" }) {
       transition={rolling ? { duration: 1, ease: "easeOut" } : { type: "spring", stiffness: 300, damping: 12 }}
     >
       <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full overflow-visible" aria-hidden="true">
-        <polygon points="50,3 92,27 92,73 50,97 8,73 8,27" fill="hsl(161 20% 8%)" stroke={stroke} strokeWidth="2" style={{ filter: `drop-shadow(0 0 10px ${stroke})` }} />
+        <polygon points="50,3 92,27 92,73 50,97 8,73 8,27" fill="hsl(var(--card))" stroke={stroke} strokeWidth="2" style={{ filter: `drop-shadow(0 0 10px ${stroke})` }} />
         <polygon points="50,22 76,66 24,66" fill="none" stroke={stroke} strokeOpacity="0.7" strokeWidth="1.2" />
         <g stroke={stroke} strokeOpacity="0.35" strokeWidth="1">
           <line x1="50" y1="3" x2="50" y2="22" /><line x1="92" y1="27" x2="76" y2="66" /><line x1="92" y1="27" x2="50" y2="22" />
