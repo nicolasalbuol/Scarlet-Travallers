@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
 import { ImagePlus, Loader2 } from "lucide-react";
+import { PASSADO_DEFAULTS, PASSADO_CATEGORIES } from "@/lib/passadoData";
 
 export default function LoreTab({ character, editMode, updateField }) {
   const [uploading, setUploading] = React.useState(false);
@@ -59,6 +60,45 @@ export default function LoreTab({ character, editMode, updateField }) {
             </>
           )}
         </div>
+      </div>
+
+      {/* Passado escolhido na criação */}
+      <div>
+        <h3 className="text-xs font-semibold text-muted-foreground mb-2">PASSADO</h3>
+        {editMode ? (
+          <select
+            value={character.passado || ""}
+            onChange={(e) => updateField("passado", e.target.value)}
+            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+          >
+            <option value="">— sem passado —</option>
+            {PASSADO_CATEGORIES.map((cat) => (
+              <optgroup key={cat.id} label={cat.name}>
+                {PASSADO_DEFAULTS.filter((p) => p.category === cat.id).map((p) => (
+                  <option key={p.name} value={p.name}>{p.name}</option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        ) : (
+          (() => {
+            const p = PASSADO_DEFAULTS.find((x) => x.name === character.passado);
+            const cat = PASSADO_CATEGORIES.find((c) => c.id === p?.category);
+            if (!character.passado) return <p className="text-sm text-muted-foreground">Nenhum passado escolhido.</p>;
+            return (
+              <div className="st-panel p-4 space-y-1">
+                <div className="font-cinzel font-bold text-primary">{character.passado}</div>
+                {cat && <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{cat.name}</div>}
+                {p?.description && <p className="text-sm text-muted-foreground">{p.description}</p>}
+                {p?.skill_1 && (
+                  <p className="text-xs text-accent">
+                    +{p.bonus_value || 2} em {[p.skill_1, p.skill_2].filter(Boolean).join(" e ")}
+                  </p>
+                )}
+              </div>
+            );
+          })()
+        )}
       </div>
 
       {/* Lore / history */}
