@@ -1,7 +1,7 @@
 // Conteúdo do livro (origens, raças, classes, skills, C.A.S.A.)
 import { ORIGIN_OPTIONS, RACE_OPTIONS, CLASS_OPTIONS, CLASS_SKILLS, CASA_OPTIONS } from "./bookData";
 export { ORIGIN_OPTIONS, RACE_OPTIONS, CLASS_OPTIONS, CLASS_SKILLS, CASA_OPTIONS };
-// A etapa Vínculos usa a cascata Plano → Círculo → Elemento (vinculosData.js).
+// A etapa Vínculos usa vinculosData.js (textos) e vinculosRules.js (regras).
 export const BOND_OPTIONS = [];
 
 export const BUILDER_STEPS = [
@@ -10,7 +10,7 @@ export const BUILDER_STEPS = [
   { id: "raca", label: "Raça", description: "A escolha da raça dá ao personagem vantagens e desvantagens únicas. Ela influencia tanto os atributos físicos quanto a forma como ele interage com o mundo. Híbridos possuem duas raças: recebem a Vantagem de uma e a Desvantagem da outra." },
   { id: "classe", label: "Classe", description: "Ao escolher sua classe, você também seleciona algumas Skills de Classe, que oferecem habilidades que diferenciam ainda mais personagens da mesma categoria." },
   { id: "casa", label: "C.A.S.A.", description: "C.A.S.A. (Capacidade Através do Sexto Atributo) é a base do poder de alguns personagens. Ela representa como ele acessa, canaliza e manifesta forças sobrenaturais, e dá bônus de atributo dependendo do tipo." },
-  { id: "vinculos", label: "Vínculos", description: "Dentro desse mundo existem 3 planos: Plano Material, Plano Imaginário e Outro Lado. Escolha o círculo e o elemento do seu vínculo." },
+  { id: "vinculos", label: "Vínculos", description: "Dentro desse mundo existem 3 planos: Plano Material, Plano Imaginário e Outro Lado. Escolha seus elementos: a quantidade depende da sua Origem, e alguns círculos dependem da Raça, Classe ou C.A.S.A." },
   { id: "atributos", label: "Atributos", description: "Você recebe 7 pontos iniciais para distribuir entre os atributos (mín. 0, máx. 4), mais os pontos da sua Origem. O bônus da C.A.S.A. soma por cima e pode passar de 4." },
   { id: "pericias", label: "Perícias", description: "No início, você pode escolher 6 perícias. Além disso, recebe um número extra de perícias igual ao valor de Inteligência ou Sabedoria (você escolhe qual). Cada perícia começa com treino +5 em testes." },
   { id: "toques", label: "Toques Finais", description: "Defina os detalhes finais do seu personagem antes de criar a ficha." },

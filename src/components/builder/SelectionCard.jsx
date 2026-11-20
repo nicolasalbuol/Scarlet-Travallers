@@ -3,7 +3,7 @@ import { ChevronDown, Check, Sparkles, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { optionCaracteristicas } from "@/lib/optionContent";
 
-export default function SelectionCard({ option, isSelected, onSelect, locked = false, missing = [] }) {
+export default function SelectionCard({ option, isSelected, onSelect, locked = false, missing = [], lockText, selectedLabel = "Selecionado", sections }) {
   const [expanded, setExpanded] = useState(false);
   const caracteristicas = optionCaracteristicas(option);
 
@@ -38,7 +38,7 @@ export default function SelectionCard({ option, isSelected, onSelect, locked = f
             </span>
             {locked && (
               <span className="text-[11px] text-destructive/80 flex items-center gap-1 mt-0.5">
-                <Lock className="w-3 h-3" /> Requer: {missing.join(", ")}
+                <Lock className="w-3 h-3" /> {lockText || `Requer: ${missing.join(", ")}`}
               </span>
             )}
           </div>
@@ -60,7 +60,7 @@ export default function SelectionCard({ option, isSelected, onSelect, locked = f
           >
             {isSelected ? (
               <>
-                <Check className="w-3 h-3 mr-1" /> Selecionado
+                <Check className="w-3 h-3 mr-1" /> {selectedLabel}
               </>
             ) : (
               "Escolher"
@@ -72,7 +72,13 @@ export default function SelectionCard({ option, isSelected, onSelect, locked = f
       {/* Expanded content: Nome → Descrição → Características */}
       {expanded && (
         <div className="border-t border-border px-4 pb-4 pt-3 space-y-3">
-          <p className="text-sm text-foreground/80 leading-relaxed">{option.description}</p>
+          {option.description && <p className="text-sm text-foreground/80 leading-relaxed">{option.description}</p>}
+          {sections?.map((s) => (
+            <div key={s.title}>
+              <p className="text-xs font-semibold text-primary mb-1">{s.title}</p>
+              <p className="text-sm text-foreground/80 leading-relaxed">{s.text}</p>
+            </div>
+          ))}
 
           {caracteristicas.length > 0 && (
             <div>

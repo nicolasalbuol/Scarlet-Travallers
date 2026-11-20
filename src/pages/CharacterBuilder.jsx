@@ -32,6 +32,7 @@ import ClassSkillsModal from "@/components/builder/ClassSkillsModal";
 import PassadoStep from "@/components/builder/PassadoStep";
 import CasaBonusModal from "@/components/builder/CasaBonusModal";
 import VinculosStep from "@/components/builder/VinculosStep";
+import { vinculoContext, vinculoLimit, vinculosComplete, sanitizeVinculos, elementById } from "@/lib/vinculosRules";
 import { PASSADO_DEFAULTS } from "@/lib/passadoData";
 import { buildPrereqState, evaluatePrerequisites } from "@/lib/prerequisites";
 import { startingKit, applyCasaSkillBonus, matchSkill, TRAINED_VALUE } from "@/lib/autoBuild";
@@ -118,9 +119,7 @@ export default function CharacterBuilder() {
     casa: "",
     casa_2: "",
     bond: "",
-    bond_plano: "",
-    bond_circulo: "",
-    bond_elemento: "",
+    vinculos: [],
     classSkills: [],
     classSkills_2: [],
     attributePoints: emptyPoints(),
@@ -236,7 +235,7 @@ export default function CharacterBuilder() {
         return !!character.casa && (!needsCasaBonus(character.origin, step.uid) || sumPoints(character.casaBonus) > 0);
       case "casa_2": return !!character.casa_2;
       case "vinculos":
-        return !!character.bond_plano && !!character.bond_circulo && !!character.bond_elemento;
+        return vinculosComplete(vinculoContext(character), character.vinculos || []);
       case "atributos":
         return availablePointsFor(character.origin, character.attributePoints) === 0;
       case "pericias": return (character.trainedSkills || []).length === periciaLimit(finalAttributes, character.pericia_attr);
@@ -244,6 +243,18 @@ export default function CharacterBuilder() {
       default: return false;
     }
   });
+
+  // Voltou e trocou Origem, Raça, Classe ou C.A.S.A.: remove os vínculos que deixaram de valer.
+  useEffect(() => {
+    const current = character.vinculos || [];
+    if (!current.length) return;
+    const next = sanitizeVinculos(vinculoContext(character), current);
+    if (next.length !== current.length) {
+      setCharacter((prev) => ({ ...prev, vinculos: next }));
+      toast.warning("Alguns vínculos foram removidos porque a escolha anterior mudou.");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [character.origin, character.race, character.race_2, character.char_class, character.char_class_2, character.casa, character.casa_2, character.casa_entidade]);
 
   const availableAttrPoints = useMemo(
     () => availablePointsFor(character.origin, character.attributePoints),
@@ -497,8 +508,8 @@ export default function CharacterBuilder() {
     }
 
     if (step.uid === "vinculos") {
-      if (!character.bond_plano || !character.bond_circulo || !character.bond_elemento) {
-        toast.error("Selecione Plano, Círculo e Elemento");
+      if (!vinculosComplete(vinculoContext(character), character.vinculos || [])) {
+        toast.error(`Escolha ${vinculoLimit(vinculoContext(character))} vínculo(s) (o da C.A.S.A. primeiro, se houver)`);
         return;
       }
       goToStep(currentStep + 1);
@@ -574,9 +585,11 @@ export default function CharacterBuilder() {
       race_disadvantage: character.race_disadvantage,
       char_class: charClassValue,
       power_technique: casaValue,
-      elemental_bond: character.bond_elemento
-        ? `${character.bond_plano} · ${character.bond_circulo} · ${character.bond_elemento}`
-        : character.bond,
+      elemental_bond: (character.vinculos || []).map((v) => elementById(v.id)?.name).filter(Boolean).join(", ") || character.bond,
+      vinculos: (character.vinculos || []).map((v) => {
+        const e = elementById(v.id) || {};
+        return { plano: e.plano, circulo: e.circulo, categoria: e.categoria || "", elemento: e.name, casa: v.casa || "" };
+      }),
       level: character.level || 1,
       alignment: character.alignment,
       mental_state: character.mental_state,
@@ -668,17 +681,8 @@ export default function CharacterBuilder() {
                     />
                   ) : step.id === "vinculos" ? (
                     <VinculosStep
-                      plano={character.bond_plano}
-                      circulo={character.bond_circulo}
-                      elemento={character.bond_elemento}
-                      onChange={({ plano, circulo, elemento }) =>
-                        setCharacter((prev) => ({
-                          ...prev,
-                          bond_plano: plano,
-                          bond_circulo: circulo,
-                          bond_elemento: elemento,
-                        }))
-                      }
+                      character={character}
+                      onChange={(vinculos) => setCharacter((prev) => ({ ...prev, vinculos }))}
                     />
                   ) : STEP_DATA[step.id]?.length ? (
                     <SelectionSection
