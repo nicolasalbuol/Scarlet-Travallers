@@ -14,6 +14,7 @@ import CharacterCard from "@/components/characters/CharacterCard";
 import Sigil from "@/components/fx/Sigil";
 import ScrambleText from "@/components/fx/ScrambleText";
 import CountUp from "@/components/fx/CountUp";
+import ImportOldCharacters from "@/components/admin/ImportOldCharacters";
 
 /* ------------------------------------------------------------------ */
 /* Cofre: pede a mesma senha do Painel ADM                             */
@@ -194,6 +195,8 @@ function Archive({ onLock }) {
           Para ver as de todos, marque sua conta como ADM no Supabase (veja o guia de instalação).
         </div>
       )}
+
+      <ImportOldCharacters existing={characters} myEmail={user?.email} isAdmin={user?.role === "admin"} />
 
       {/* Números */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
