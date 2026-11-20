@@ -15,80 +15,92 @@
     --font-inter: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-    --background: 150 22% 96%;
-    --foreground: 161 30% 10%;
+    /* Cor-tema: --h é o tom principal e --h2 o do brilho. Trocados pelas paletas abaixo. */
+    --h: 161;
+    --h2: 152;
+
+    --background: var(--h) 22% 96%;
+    --foreground: var(--h) 30% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 161 30% 10%;
+    --card-foreground: var(--h) 30% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 161 30% 10%;
-    --primary: 161 22% 38%;
+    --popover-foreground: var(--h) 30% 10%;
+    --primary: var(--h) 22% 38%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 155 18% 90%;
-    --secondary-foreground: 161 30% 12%;
-    --muted: 155 18% 92%;
-    --muted-foreground: 161 10% 36%;
-    --accent: 161 34% 30%;
+    --secondary: var(--h) 18% 90%;
+    --secondary-foreground: var(--h) 30% 12%;
+    --muted: var(--h) 18% 92%;
+    --muted-foreground: var(--h) 10% 36%;
+    --accent: var(--h) 34% 30%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 46%;
     --destructive-foreground: 0 0% 100%;
-    --border: 155 18% 80%;
-    --input: 155 18% 84%;
-    --ring: 161 22% 38%;
+    --border: var(--h) 18% 80%;
+    --input: var(--h) 18% 84%;
+    --ring: var(--h) 22% 38%;
     --panel-from: 0 0% 100% / 0.92;
-    --panel-to: 150 25% 97% / 0.92;
+    --panel-to: var(--h) 25% 97% / 0.92;
     --nav-bg: 0 0% 100% / 0.9;
-    --glow-a: 161 38% 40% / 0.10;
-    --glow-b: 152 50% 40% / 0.06;
-    --trace: 161 40% 34%;
-    --trace-faint: 161 25% 40% / 0.14;
-    --chart-1: 161 19% 46%;
-    --chart-2: 152 42% 66%;
-    --chart-3: 161 38% 38%;
-    --chart-4: 170 30% 50%;
-    --chart-5: 161 25% 60%;
+    --glow-a: var(--h) 38% 40% / 0.10;
+    --glow-b: var(--h2) 50% 40% / 0.06;
+    --trace: var(--h) 40% 34%;
+    --trace-faint: var(--h) 25% 40% / 0.14;
+    --chart-1: var(--h) 19% 46%;
+    --chart-2: var(--h2) 42% 66%;
+    --chart-3: var(--h) 38% 38%;
+    --chart-4: var(--h) 30% 50%;
+    --chart-5: var(--h) 25% 60%;
     --radius: 0.85rem;
-    --sidebar-background: 161 20% 5%;
-    --sidebar-foreground: 150 14% 92%;
-    --sidebar-primary: 161 19% 46%;
-    --sidebar-primary-foreground: 160 30% 6%;
-    --sidebar-accent: 161 16% 12%;
-    --sidebar-accent-foreground: 150 14% 92%;
-    --sidebar-border: 161 32% 17%;
-    --sidebar-ring: 161 19% 46%;
+    --sidebar-background: var(--h) 20% 5%;
+    --sidebar-foreground: var(--h) 14% 92%;
+    --sidebar-primary: var(--h) 19% 46%;
+    --sidebar-primary-foreground: var(--h) 30% 6%;
+    --sidebar-accent: var(--h) 16% 12%;
+    --sidebar-accent-foreground: var(--h) 14% 92%;
+    --sidebar-border: var(--h) 32% 17%;
+    --sidebar-ring: var(--h) 19% 46%;
 
-    --scarlet: 161 19% 46%;
-    --scarlet-deep: 161 38% 28%;
-    --gold: 152 42% 66%;
+    --scarlet: var(--h) 19% 46%;
+    --scarlet-deep: var(--h) 38% 28%;
+    --gold: var(--h2) 42% 66%;
   }
+
+  /* Paletas (Perfil → Cor do tema). Jade é a cor da logo. */
+  :root[data-palette="esmeralda"] { --h: 140; --h2: 125; }
+  :root[data-palette="turquesa"] { --h: 178; --h2: 168; }
+  :root[data-palette="oceano"] { --h: 200; --h2: 188; --pl: 50%; }
+  :root[data-palette="musgo"] { --h: 95; --h2: 80; }
+  :root[data-palette="cobre"] { --h: 22; --h2: 34; --pl: 51%; }
+  :root[data-palette="ametista"] { --h: 268; --h2: 285; --pl: 57%; }
 
   /* Tema escuro (padrão). O claro fica no :root acima. */
   .dark {
-    --background: 161 22% 4%;
-    --foreground: 150 14% 92%;
-    --card: 161 18% 7%;
-    --card-foreground: 150 14% 92%;
-    --popover: 161 20% 6%;
-    --popover-foreground: 150 14% 92%;
-    --primary: 161 19% 46%;
-    --primary-foreground: 160 30% 6%;
-    --secondary: 161 16% 12%;
-    --secondary-foreground: 150 14% 92%;
-    --muted: 161 14% 11%;
-    --muted-foreground: 155 8% 62%;
-    --accent: 152 42% 66%;
-    --accent-foreground: 161 22% 6%;
+    --background: var(--h) 22% 4%;
+    --foreground: var(--h) 14% 92%;
+    --card: var(--h) 18% 7%;
+    --card-foreground: var(--h) 14% 92%;
+    --popover: var(--h) 20% 6%;
+    --popover-foreground: var(--h) 14% 92%;
+    --primary: var(--h) 19% var(--pl, 46%);
+    --primary-foreground: var(--h) 30% 6%;
+    --secondary: var(--h) 16% 12%;
+    --secondary-foreground: var(--h) 14% 92%;
+    --muted: var(--h) 14% 11%;
+    --muted-foreground: var(--h) 8% 62%;
+    --accent: var(--h2) 42% 66%;
+    --accent-foreground: var(--h) 22% 6%;
     --destructive: 14 88% 55%;
     --destructive-foreground: 30 30% 97%;
-    --border: 161 32% 17%;
-    --input: 161 26% 16%;
-    --ring: 161 19% 46%;
-    --panel-from: 161 18% 8% / 0.82;
-    --panel-to: 161 20% 5% / 0.82;
-    --nav-bg: 161 20% 5% / 0.88;
-    --glow-a: 161 38% 30% / 0.18;
-    --glow-b: 152 50% 40% / 0.08;
-    --trace: 152 50% 66%;
-    --trace-faint: 161 30% 46% / 0.16;
+    --border: var(--h) 32% 17%;
+    --input: var(--h) 26% 16%;
+    --ring: var(--h) 19% var(--pl, 46%);
+    --panel-from: var(--h) 18% 8% / 0.82;
+    --panel-to: var(--h) 20% 5% / 0.82;
+    --nav-bg: var(--h) 20% 5% / 0.88;
+    --glow-a: var(--h) 38% 30% / 0.18;
+    --glow-b: var(--h2) 50% 40% / 0.08;
+    --trace: var(--h2) 50% 66%;
+    --trace-faint: var(--h) 30% 46% / 0.16;
   }
 }
 
@@ -128,7 +140,7 @@
 
   /* Título com brilho escarlate que "respira" */
   .text-scarlet-gradient {
-    background: linear-gradient(100deg, hsl(152 20% 96%) 0%, hsl(161 38% 62%) 40%, hsl(152 50% 66%) 60%, hsl(152 20% 96%) 100%);
+    background: linear-gradient(100deg, hsl(var(--h2) 20% 96%) 0%, hsl(var(--h) 38% 62%) 40%, hsl(var(--h2) 50% 66%) 60%, hsl(var(--h2) 20% 96%) 100%);
     background-size: 250% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -157,7 +169,7 @@
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: conic-gradient(from var(--st-angle, 0deg), hsl(161 38% 52% / 0.0), hsl(161 38% 55% / 0.9), hsl(152 50% 60% / 0.8), hsl(161 38% 52% / 0.0) 40%);
+    background: conic-gradient(from var(--st-angle, 0deg), hsl(var(--h) 38% 52% / 0.0), hsl(var(--h) 38% 55% / 0.9), hsl(var(--h2) 50% 60% / 0.8), hsl(var(--h) 38% 52% / 0.0) 40%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -167,7 +179,7 @@
   }
 
   html:not(.dark) .text-scarlet-gradient {
-    background-image: linear-gradient(100deg, hsl(161 35% 16%) 0%, hsl(161 30% 34%) 40%, hsl(152 40% 32%) 60%, hsl(161 35% 16%) 100%);
+    background-image: linear-gradient(100deg, hsl(var(--h) 35% 16%) 0%, hsl(var(--h) 30% 34%) 40%, hsl(var(--h2) 40% 32%) 60%, hsl(var(--h) 35% 16%) 100%);
   }
   html:not(.dark) .st-grain::after { opacity: 0.035; }
 
@@ -234,7 +246,7 @@
 ::-webkit-scrollbar { width: 7px; height: 7px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(hsl(161 38% 30%), hsl(161 38% 20%));
+  background: linear-gradient(hsl(var(--h) 38% 30%), hsl(var(--h) 38% 20%));
   border-radius: 4px;
 }
 
@@ -249,14 +261,14 @@
 .animate-dice-roll { animation: diceRoll 0.6s ease-in-out; }
 
 @keyframes criticalGlow {
-  0%, 100% { box-shadow: 0 0 20px hsl(152 50% 60% / 0.45); }
-  50% { box-shadow: 0 0 46px hsl(152 50% 65% / 0.85); }
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--h2) 50% 60% / 0.45); }
+  50% { box-shadow: 0 0 46px hsl(var(--h2) 50% 65% / 0.85); }
 }
 .animate-critical { animation: criticalGlow 1.2s ease-in-out infinite; }
 
 @keyframes failGlow {
-  0%, 100% { box-shadow: 0 0 20px hsl(161 38% 45% / 0.5); }
-  50% { box-shadow: 0 0 44px hsl(161 38% 50% / 0.85); }
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--h) 38% 45% / 0.5); }
+  50% { box-shadow: 0 0 44px hsl(var(--h) 38% 50% / 0.85); }
 }
 .animate-fail { animation: failGlow 1s ease-in-out infinite; }
 

@@ -8,7 +8,11 @@
     <meta name="theme-color" content="#0b1411" />
     <title>Scarlet Travellers</title>
     <script>
-      try { if (localStorage.getItem("st-theme") === "light") document.documentElement.classList.remove("dark"); } catch (e) {}
+      try {
+        if (localStorage.getItem("st-theme") === "light") document.documentElement.classList.remove("dark");
+        var p = localStorage.getItem("st-palette");
+        if (p && p !== "jade") document.documentElement.dataset.palette = p;
+      } catch (e) {}
     </script>
   </head>
   <body>

@@ -75,7 +75,7 @@ export default function AppLayout() {
                     {isActive && (
                       <motion.span
                         layoutId="st-nav-thread"
-                        className="absolute -left-5 top-1/2 -translate-y-1/2 h-8 w-[3px] rounded-full bg-primary shadow-[0_0_14px_hsl(161_38%_55%)]"
+                        className="absolute -left-5 top-1/2 -translate-y-1/2 h-8 w-[3px] rounded-full bg-primary shadow-[0_0_14px_hsl(var(--h)_38%_55%)]"
                       />
                     )}
                     {item.path === "/profile" && user?.avatar_url ? (
@@ -125,7 +125,7 @@ export default function AppLayout() {
       </div>
 
       {/* Navegação inferior (celular) */}
-      <nav className="xl:hidden fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(var(--nav-bg))] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(161_38%_30%/0.6)]">
+      <nav className="xl:hidden fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-50 rounded-2xl border border-border/80 bg-[hsl(var(--nav-bg))] backdrop-blur-xl shadow-[0_10px_40px_-10px_hsl(var(--h)_38%_30%/0.6)]">
         <div className="flex items-stretch justify-between px-1 py-1 overflow-x-auto [scrollbar-width:none]">
           {items.map((item) => {
             const isActive = isActivePath(item.path);

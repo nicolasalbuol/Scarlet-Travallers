@@ -125,7 +125,7 @@ export default function DiceRollModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-card/95 backdrop-blur-xl border-primary/30 shadow-[0_0_80px_-20px_hsl(161_38%_45%/0.8)]">
+      <DialogContent className="sm:max-w-md bg-card/95 backdrop-blur-xl border-primary/30 shadow-[0_0_80px_-20px_hsl(var(--h)_38%_45%/0.8)]">
         <DialogHeader>
           <DialogTitle className="font-cinzel text-xl flex items-center gap-2 text-primary">
             <Dices className="w-6 h-6" />
@@ -180,7 +180,7 @@ export default function DiceRollModal({
           <Button
             onClick={handleRoll}
             disabled={isRolling}
-            className="w-full h-14 text-lg font-cinzel font-bold tracking-[0.3em] bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_-6px_hsl(161_38%_50%/0.9)]"
+            className="w-full h-14 text-lg font-cinzel font-bold tracking-[0.3em] bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_-6px_hsl(var(--h)_38%_50%/0.9)]"
           >
             {isRolling ? (
               <Dices className="w-6 h-6 animate-dice-roll" />

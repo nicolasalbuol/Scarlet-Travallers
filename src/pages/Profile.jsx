@@ -10,11 +10,12 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { useTheme, setTheme } from "@/lib/theme";
+import { useTheme, setTheme, usePalette, setPalette, PALETTES } from "@/lib/theme";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
   const darkMode = useTheme() === "dark";
+  const palette = usePalette();
   const setDarkMode = (on) => setTheme(on ? "dark" : "light");
   const [language, setLanguage] = useState("pt-BR");
 
@@ -79,7 +80,7 @@ export default function Profile() {
 
       {/* User info */}
       <div className="bg-card border border-border rounded-xl p-6 mb-6">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
           <div className="flex flex-col items-center gap-1 shrink-0">
             <label className="relative w-20 h-20 rounded-full bg-primary/10 ring-2 ring-primary/40 flex items-center justify-center overflow-hidden cursor-pointer group" title="Trocar foto">
               {user?.avatar_url ? (
@@ -101,7 +102,7 @@ export default function Profile() {
           </div>
           <div>
             {editingName ? (
-              <div className="flex items-center gap-1">
+              <div className="flex items-center justify-center sm:justify-start gap-1">
                 <input
                   autoFocus
                   value={nameDraft}
@@ -117,7 +118,7 @@ export default function Profile() {
             ) : (
               <button
                 onClick={() => { setNameDraft(user?.full_name || ""); setEditingName(true); }}
-                className="group flex items-center gap-2 text-left"
+                className="group flex items-center gap-2 text-left mx-auto sm:mx-0"
                 title="Mudar nome de exibição"
               >
                 <h2 className="font-cinzel text-xl font-semibold text-foreground">{user?.full_name || "Viajante"}</h2>
@@ -125,7 +126,7 @@ export default function Profile() {
               </button>
             )}
             <p className="text-sm text-muted-foreground">{user?.email || ""}</p>
-            <div className="flex gap-2 mt-2">
+            <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-2">
               <Badge variant="outline" className="text-xs border-primary/30 text-primary">
                 <ScrollText className="w-3 h-3 mr-1" />
                 {characters.length} fichas
@@ -150,6 +151,32 @@ export default function Profile() {
             </div>
           </div>
           <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+        </div>
+
+        {/* Cor do tema */}
+        <div className="p-4">
+          <Label className="text-sm font-medium">Cor do tema</Label>
+          <p className="text-xs text-muted-foreground mb-3">Muda a cor do site e de todas as animações.</p>
+          <div className="flex flex-wrap gap-3">
+            {PALETTES.map((p) => {
+              const active = palette === p.id;
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => setPalette(p.id)}
+                  aria-pressed={active}
+                  aria-label={p.name}
+                  className="flex flex-col items-center gap-1 touch-manipulation"
+                >
+                  <span
+                    className={`w-11 h-11 rounded-full transition-transform ${active ? "ring-2 ring-offset-2 ring-offset-card ring-foreground scale-110" : "ring-1 ring-border"}`}
+                    style={{ background: `linear-gradient(135deg, hsl(${p.h} 30% 46%), hsl(${p.h} 45% 66%))` }}
+                  />
+                  <span className={`text-[10px] ${active ? "text-foreground font-semibold" : "text-muted-foreground"}`}>{p.name}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Language */}

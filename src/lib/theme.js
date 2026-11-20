@@ -27,3 +27,36 @@ export function useTheme() {
     getTheme
   );
 }
+
+// Cor-tema (paleta): muda o atributo data-palette do <html>; as cores do index.css seguem.
+export const PALETTES = [
+  { id: "jade", name: "Jade", h: 161 },
+  { id: "esmeralda", name: "Esmeralda", h: 140 },
+  { id: "turquesa", name: "Turquesa", h: 178 },
+  { id: "oceano", name: "Oceano", h: 200 },
+  { id: "musgo", name: "Musgo", h: 95 },
+  { id: "cobre", name: "Cobre", h: 22 },
+  { id: "ametista", name: "Ametista", h: 268 },
+];
+const PKEY = "st-palette";
+
+export const getPalette = () => document.documentElement.dataset.palette || "jade";
+
+export function setPalette(id) {
+  if (id === "jade") delete document.documentElement.dataset.palette;
+  else document.documentElement.dataset.palette = id;
+  try {
+    localStorage.setItem(PKEY, id);
+  } catch {}
+  listeners.forEach((fn) => fn());
+}
+
+export function usePalette() {
+  return useSyncExternalStore(
+    (fn) => {
+      listeners.add(fn);
+      return () => listeners.delete(fn);
+    },
+    getPalette
+  );
+}
