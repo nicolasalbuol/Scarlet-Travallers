@@ -93,10 +93,11 @@ create policy "ler" on public.records for select to authenticated using (
 -- CRIAR
 --  * Fichas e campanhas: qualquer pessoa logada (em seu próprio nome).
 --  * Livros, construtor, passados, configurações: só ADM.
+--  * O ADM pode criar fichas no nome de outro jogador (importação do site antigo).
 drop policy if exists "criar" on public.records;
 create policy "criar" on public.records for insert to authenticated with check (
-  lower(created_by) = public.my_email()
-  and (entity in ('Character', 'Campanha') or public.is_admin())
+  (lower(created_by) = public.my_email() and entity in ('Character', 'Campanha'))
+  or public.is_admin()
 );
 
 -- EDITAR
