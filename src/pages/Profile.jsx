@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { User, LogOut, ScrollText, Moon, Sun, Globe, Shield, Camera, Loader2, Trash2 } from "lucide-react";
+import { User, LogOut, ScrollText, Moon, Sun, Globe, Shield, Camera, Loader2, Trash2, Pencil, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -51,6 +51,21 @@ export default function Profile() {
     setUser(await base44.auth.me());
   };
 
+  const [editingName, setEditingName] = useState(false);
+  const [nameDraft, setNameDraft] = useState("");
+  const saveName = async () => {
+    const name = nameDraft.trim().slice(0, 40);
+    if (!name) return toast.error("Digite um nome.");
+    try {
+      await base44.auth.setDisplayName(name);
+      setUser((u) => ({ ...u, full_name: name }));
+      setEditingName(false);
+      toast.success("Nome atualizado!");
+    } catch (err) {
+      toast.error(err.message || "Não foi possível salvar o nome.");
+    }
+  };
+
   const handleLogout = () => {
     base44.auth.logout();
   };
@@ -85,9 +100,30 @@ export default function Profile() {
             )}
           </div>
           <div>
-            <h2 className="font-cinzel text-xl font-semibold text-foreground">
-              {user?.full_name || "Viajante"}
-            </h2>
+            {editingName ? (
+              <div className="flex items-center gap-1">
+                <input
+                  autoFocus
+                  value={nameDraft}
+                  maxLength={40}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") saveName(); if (e.key === "Escape") setEditingName(false); }}
+                  className="h-9 w-full max-w-[220px] rounded-md border border-input bg-background px-2 text-sm"
+                  aria-label="Nome de exibição"
+                />
+                <button onClick={saveName} className="p-2 text-primary" aria-label="Salvar nome"><Check className="w-4 h-4" /></button>
+                <button onClick={() => setEditingName(false)} className="p-2 text-muted-foreground" aria-label="Cancelar"><X className="w-4 h-4" /></button>
+              </div>
+            ) : (
+              <button
+                onClick={() => { setNameDraft(user?.full_name || ""); setEditingName(true); }}
+                className="group flex items-center gap-2 text-left"
+                title="Mudar nome de exibição"
+              >
+                <h2 className="font-cinzel text-xl font-semibold text-foreground">{user?.full_name || "Viajante"}</h2>
+                <Pencil className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary" />
+              </button>
+            )}
             <p className="text-sm text-muted-foreground">{user?.email || ""}</p>
             <div className="flex gap-2 mt-2">
               <Badge variant="outline" className="text-xs border-primary/30 text-primary">

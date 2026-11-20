@@ -126,7 +126,7 @@ async function me() {
   return {
     id: u.id,
     email: u.email,
-    full_name: profile?.full_name || u.user_metadata?.full_name || u.email.split("@")[0],
+    full_name: u.user_metadata?.st_name || profile?.full_name || u.user_metadata?.full_name || u.email.split("@")[0],
     role: profile?.role || "user",
     // Foto escolhida no site; se não tiver, usa a do Google.
     avatar_url: u.user_metadata?.st_avatar || u.user_metadata?.avatar_url || u.user_metadata?.picture || "",
@@ -157,6 +157,11 @@ export const base44 = {
     // "st_avatar" não é sobrescrito pelo Google a cada login (ao contrário de avatar_url).
     async setAvatar(url) {
       const { error } = await supabase.auth.updateUser({ data: { st_avatar: url } });
+      if (error) fail(error);
+    },
+    // Nome de exibição escolhido no site (o Google não sobrescreve "st_name").
+    async setDisplayName(name) {
+      const { error } = await supabase.auth.updateUser({ data: { st_name: name } });
       if (error) fail(error);
     },
     redirectToLogin() {
