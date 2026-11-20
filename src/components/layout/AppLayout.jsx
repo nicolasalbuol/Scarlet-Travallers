@@ -78,7 +78,11 @@ export default function AppLayout() {
                         className="absolute -left-5 top-1/2 -translate-y-1/2 h-8 w-[3px] rounded-full bg-primary shadow-[0_0_14px_hsl(161_38%_55%)]"
                       />
                     )}
-                    <item.icon className={`relative w-[18px] h-[18px] transition-transform duration-300 group-hover:scale-110 ${isActive ? "text-primary" : ""}`} />
+                    {item.path === "/profile" && user?.avatar_url ? (
+                      <img src={user.avatar_url} alt="" className="relative w-[22px] h-[22px] rounded-full object-cover ring-1 ring-primary/50" />
+                    ) : (
+                      <item.icon className={`relative w-[18px] h-[18px] transition-transform duration-300 group-hover:scale-110 ${isActive ? "text-primary" : ""}`} />
+                    )}
                     <span className="relative text-sm font-medium">{item.label}</span>
                     <span className="relative ml-auto text-[10px] uppercase tracking-[0.18em] text-muted-foreground/0 group-hover:text-muted-foreground/70 transition-colors">
                       {item.hint}
@@ -140,7 +144,11 @@ export default function AppLayout() {
                     transition={{ type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
-                <item.icon className={`relative w-5 h-5 ${isActive ? "stroke-[2.4]" : ""}`} />
+                {item.path === "/profile" && user?.avatar_url ? (
+                  <img src={user.avatar_url} alt="" className={`relative w-5 h-5 rounded-full object-cover ${isActive ? "ring-2 ring-primary" : "ring-1 ring-border"}`} />
+                ) : (
+                  <item.icon className={`relative w-5 h-5 ${isActive ? "stroke-[2.4]" : ""}`} />
+                )}
                 <span className="relative text-[9.5px] font-medium whitespace-nowrap">{item.label}</span>
               </Link>
             );

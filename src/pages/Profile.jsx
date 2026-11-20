@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { User, LogOut, ScrollText, Moon, Sun, Globe, Shield } from "lucide-react";
+import { User, LogOut, ScrollText, Moon, Sun, Globe, Shield, Camera, Loader2, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
@@ -27,6 +28,29 @@ export default function Profile() {
     initialData: [],
   });
 
+  const [uploading, setUploading] = useState(false);
+  const changeAvatar = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return toast.error("Escolha uma imagem.");
+    if (file.size > 5 * 1024 * 1024) return toast.error("A imagem precisa ter até 5 MB.");
+    setUploading(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      await base44.auth.setAvatar(file_url);
+      setUser((u) => ({ ...u, avatar_url: file_url }));
+      toast.success("Foto de perfil atualizada!");
+    } catch (err) {
+      toast.error(err.message || "Não foi possível enviar a foto.");
+    }
+    setUploading(false);
+  };
+  const removeAvatar = async () => {
+    await base44.auth.setAvatar("");
+    setUser(await base44.auth.me());
+  };
+
   const handleLogout = () => {
     base44.auth.logout();
   };
@@ -41,8 +65,24 @@ export default function Profile() {
       {/* User info */}
       <div className="bg-card border border-border rounded-xl p-6 mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-            <User className="w-8 h-8 text-primary" />
+          <div className="flex flex-col items-center gap-1 shrink-0">
+            <label className="relative w-20 h-20 rounded-full bg-primary/10 ring-2 ring-primary/40 flex items-center justify-center overflow-hidden cursor-pointer group" title="Trocar foto">
+              {user?.avatar_url ? (
+                <img src={user.avatar_url} alt="Foto de perfil" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-9 h-9 text-primary" />
+              )}
+              <span className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                {uploading ? <Loader2 className="w-5 h-5 text-white animate-spin" /> : <Camera className="w-5 h-5 text-white" />}
+              </span>
+              <input type="file" accept="image/*" className="sr-only" onChange={changeAvatar} disabled={uploading} />
+            </label>
+            <span className="text-[10px] text-muted-foreground">{uploading ? "Enviando..." : "Toque para trocar"}</span>
+            {user?.avatar_url && !uploading && (
+              <button onClick={removeAvatar} className="text-[10px] text-muted-foreground hover:text-destructive flex items-center gap-1">
+                <Trash2 className="w-3 h-3" /> remover
+              </button>
+            )}
           </div>
           <div>
             <h2 className="font-cinzel text-xl font-semibold text-foreground">
