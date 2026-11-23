@@ -7,6 +7,7 @@ import { Dices, Sparkles, Skull, Minus, Plus } from "lucide-react";
 import { rollTest } from "@/lib/diceRoller";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
+import CritFx, { paletteHex } from "./CritFx";
 
 /** d20 em SVG que gira enquanto os números piscam. */
 function SpinningD20({ rolling, value, tone = "default" }) {
@@ -16,7 +17,7 @@ function SpinningD20({ rolling, value, tone = "default" }) {
     const id = setInterval(() => setFace(1 + Math.floor(Math.random() * 20)), 55);
     return () => clearInterval(id);
   }, [rolling, value]);
-  const stroke = tone === "crit" ? "hsl(var(--accent))" : tone === "fail" ? "hsl(14 88% 58%)" : "hsl(var(--primary))";
+  const stroke = tone === "crit" ? "hsl(var(--accent))" : tone === "fail" ? "hsl(var(--fail))" : "hsl(var(--primary))";
   return (
     <motion.div
       className="relative w-28 h-28 mx-auto"
@@ -75,6 +76,7 @@ export default function DiceRollModal({
   const [disadvantages, setDisadvantages] = useState(0);
   const [result, setResult] = useState(null);
   const [isRolling, setIsRolling] = useState(false);
+  const [fx, setFx] = useState(null);
 
   const attr = Number(attributeValue) || 0;
   const net = attr + advantages - disadvantages;
@@ -98,8 +100,13 @@ export default function DiceRollModal({
       setResult(res);
       setIsRolling(false);
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce && (res.isCritical || res.isCriticalFail)) setFx(res.isCritical ? "crit" : "fail");
       if (res.isCritical && !reduce) {
-        confetti({ particleCount: 140, spread: 80, startVelocity: 42, origin: { y: 0.55 }, colors: ["#5f8c7e", "#8fc4b0", "#cdeee0", "#ffffff"], zIndex: 9999 });
+        const colors = paletteHex();
+        const mobile = window.innerWidth < 768;
+        confetti({ particleCount: mobile ? 80 : 140, spread: 80, startVelocity: 42, origin: { y: 0.55 }, colors, zIndex: 9999 });
+        setTimeout(() => confetti({ particleCount: mobile ? 40 : 70, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors, zIndex: 9999 }), 180);
+        setTimeout(() => confetti({ particleCount: mobile ? 40 : 70, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors, zIndex: 9999 }), 180);
       }
       if (onRollResult) onRollResult({ ...res, label });
       if (navigator.vibrate && res.isCritical) navigator.vibrate([100, 50, 100, 50, 200]);
@@ -125,7 +132,8 @@ export default function DiceRollModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-card/95 backdrop-blur-xl border-primary/30 shadow-[0_0_80px_-20px_hsl(var(--h)_38%_45%/0.8)]">
+      {fx && <CritFx key={result?.total + fx + (result?.rolls || []).join()} kind={fx} onDone={() => setFx(null)} />}
+      <DialogContent className={`${fx === "fail" ? "st-fx-shake-target " : ""}sm:max-w-md bg-card/95 backdrop-blur-xl border-primary/30 shadow-[0_0_80px_-20px_hsl(var(--h)_38%_45%/0.8)]`}>
         <DialogHeader>
           <DialogTitle className="font-cinzel text-xl flex items-center gap-2 text-primary">
             <Dices className="w-6 h-6" />
@@ -201,7 +209,7 @@ export default function DiceRollModal({
                   result.isCritical
                     ? "bg-accent/15 border-2 border-accent animate-critical"
                     : result.isCriticalFail
-                    ? "bg-destructive/20 border-2 border-destructive animate-fail"
+                    ? "bg-[hsl(var(--fail)/0.15)] border-2 border-[hsl(var(--fail))] animate-fail"
                     : "bg-muted border border-border"
                 }`}
               >
@@ -213,7 +221,7 @@ export default function DiceRollModal({
                   </div>
                 )}
                 {result.isCriticalFail && (
-                  <div className="flex items-center justify-center gap-2 text-destructive">
+                  <div className="flex items-center justify-center gap-2 text-[hsl(var(--fail))]">
                     <Skull className="w-6 h-6" />
                     <span className="font-cinzel font-bold text-xl">FALHA CRÍTICA!</span>
                     <Skull className="w-6 h-6" />

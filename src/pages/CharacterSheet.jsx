@@ -352,7 +352,7 @@ export default function CharacterSheet() {
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {rollHistory.map((r, i) => (
               <div key={i} className={`text-xs flex items-center justify-between p-2 rounded-lg ${
-                r.isCritical ? "bg-accent/10 text-accent" : r.isCriticalFail ? "bg-destructive/10 text-destructive" : "bg-muted"
+                r.isCritical ? "bg-accent/10 text-accent" : r.isCriticalFail ? "bg-[hsl(var(--fail)/0.12)] text-[hsl(var(--fail))]" : "bg-muted"
               }`}>
                 <span className="font-medium">{r.label}</span>
                 <span className="font-mono">
