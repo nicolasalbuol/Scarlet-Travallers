@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dices } from "lucide-react";
+import CritFx, { critConfetti } from "@/components/dice/CritFx";
 
 const DICE_TYPES = [4, 6, 8, 10, 12, 20, 100];
 
@@ -10,20 +11,37 @@ function rollN(n, sides) {
   return Array.from({ length: n }, () => Math.floor(Math.random() * sides) + 1);
 }
 
+// Crítico só existe no d20 e olha o dado natural (sem modificador):
+// algum 20 = sucesso crítico; todos os dados em 1 = falha crítica (mesma regra do teste, que usa o maior).
+export function critOf(sides, rolls) {
+  if (sides !== 20 || rolls.length === 0) return null;
+  if (rolls.includes(20)) return "crit";
+  if (rolls.every((r) => r === 1)) return "fail";
+  return null;
+}
+
 export default function RollingsTab() {
   const [results, setResults] = useState([]);
   const [freeQty, setFreeQty] = useState(1);
   const [freeSides, setFreeSides] = useState(20);
   const [freeMod, setFreeMod] = useState(0);
+  const [fx, setFx] = useState(null);
 
-  const addResult = (label, rolls, mod) => {
+  const addResult = (label, rolls, mod, sides) => {
     const total = rolls.reduce((a, b) => a + b, 0) + mod;
-    setResults((prev) => [{ label, rolls, mod, total, id: Date.now() }, ...prev].slice(0, 15));
+    const crit = critOf(sides, rolls);
+    setResults((prev) => [{ label, rolls, mod, total, crit, id: Date.now() }, ...prev].slice(0, 15));
+    if (crit) {
+      setFx(null);
+      requestAnimationFrame(() => setFx(crit)); // reinicia o efeito se sair outro crítico em seguida
+      if (crit === "crit") critConfetti();
+      if (navigator.vibrate) navigator.vibrate(crit === "crit" ? [100, 50, 100, 50, 200] : [300]);
+    }
   };
 
   const quickRoll = (sides) => {
     const rolls = rollN(1, sides);
-    addResult(`d${sides}`, rolls, 0);
+    addResult(`d${sides}`, rolls, 0, sides);
   };
 
   const freeRoll = () => {
@@ -32,11 +50,12 @@ export default function RollingsTab() {
     const mod = Number(freeMod) || 0;
     const rolls = rollN(qty, sides);
     const label = `${qty}d${sides}${mod > 0 ? ` + ${mod}` : mod < 0 ? ` - ${Math.abs(mod)}` : ""}`;
-    addResult(label, rolls, mod);
+    addResult(label, rolls, mod, sides);
   };
 
   return (
     <div className="mt-4 space-y-5">
+      {fx && <CritFx kind={fx} onDone={() => setFx(null)} />}
       {/* Quick Dice */}
       <div>
         <h3 className="text-xs font-semibold text-muted-foreground mb-3">DADOS RÁPIDOS</h3>
@@ -115,14 +134,14 @@ export default function RollingsTab() {
           </div>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {results.map((r) => {
-              const isNat20 = r.rolls.length === 1 && r.rolls[0] === 20 && r.mod === 0;
-              const isNat1 = r.rolls.length === 1 && r.rolls[0] === 1 && r.mod === 0;
+              const isNat20 = r.crit === "crit";
+              const isNat1 = r.crit === "fail";
               return (
                 <div
                   key={r.id}
                   className={`flex items-center justify-between p-2.5 rounded-lg text-sm border ${
                     isNat20 ? "bg-primary/10 border-primary/30 text-primary" :
-                    isNat1 ? "bg-destructive/10 border-destructive/30 text-destructive" :
+                    isNat1 ? "bg-[hsl(var(--fail)/0.12)] border-[hsl(var(--fail)/0.4)] text-[hsl(var(--fail))]" :
                     "bg-card border-border"
                   }`}
                 >
