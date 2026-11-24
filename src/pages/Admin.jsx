@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Shield, BookOpen, ArrowLeft, ScrollText, Search, User, Wand2, Loader2, Flag, Lock } from "lucide-react";
+import { Shield, BookOpen, ArrowLeft, ScrollText, Search, User, Wand2, Loader2, Flag, Lock, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate, Link } from "react-router-dom";
@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import BookAdminPanel from "@/components/books/BookAdminPanel";
 import BuilderAdminPanel from "@/components/admin/BuilderAdminPanel";
 import CampanhaAdminPanel from "@/components/admin/CampanhaAdminPanel";
+import AuditLogPanel from "@/components/admin/AuditLogPanel";
 
 export default function Admin() {
   const [search, setSearch] = useState("");
@@ -133,6 +134,14 @@ export default function Admin() {
         >
           <Flag className="w-4 h-4 mr-1" /> Campanhas ({campaigns.length})
         </Button>
+        <Button
+          variant={activeTab === "log" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setActiveTab("log")}
+          className={activeTab === "log" ? "bg-primary text-primary-foreground" : "border-border text-muted-foreground"}
+        >
+          <History className="w-4 h-4 mr-1" /> Log
+        </Button>
       </div>
 
       {/* Books admin */}
@@ -146,6 +155,13 @@ export default function Admin() {
       {activeTab === "builder" && (
         <div className="bg-card border border-border rounded-xl p-6">
           <BuilderAdminPanel />
+        </div>
+      )}
+
+      {/* Log de ações (só ADM) */}
+      {activeTab === "log" && (
+        <div className="bg-card border border-border rounded-xl p-4 sm:p-6">
+          <AuditLogPanel />
         </div>
       )}
 
