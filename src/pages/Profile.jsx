@@ -11,11 +11,13 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useTheme, setTheme, usePalette, setPalette, PALETTES } from "@/lib/theme";
+import CritFx, { critConfetti } from "@/components/dice/CritFx";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
   const darkMode = useTheme() === "dark";
   const palette = usePalette();
+  const [fxTest, setFxTest] = useState(null);
   const setDarkMode = (on) => setTheme(on ? "dark" : "light");
   const [language, setLanguage] = useState("pt-BR");
 
@@ -177,6 +179,15 @@ export default function Profile() {
               );
             })}
           </div>
+          <div className="flex flex-wrap gap-2 mt-4">
+            <Button size="sm" variant="outline" onClick={() => { setFxTest("crit"); critConfetti(); }}>
+              Ver sucesso crítico
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => setFxTest("fail")}>
+              Ver falha crítica
+            </Button>
+          </div>
+          {fxTest && <CritFx kind={fxTest} onDone={() => setFxTest(null)} />}
         </div>
 
         {/* Language */}

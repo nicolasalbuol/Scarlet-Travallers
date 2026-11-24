@@ -6,8 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Dices, Sparkles, Skull, Minus, Plus } from "lucide-react";
 import { rollTest } from "@/lib/diceRoller";
 import { motion, AnimatePresence } from "framer-motion";
-import confetti from "canvas-confetti";
-import CritFx, { paletteHex } from "./CritFx";
+import CritFx, { critConfetti } from "./CritFx";
 
 /** d20 em SVG que gira enquanto os números piscam. */
 function SpinningD20({ rolling, value, tone = "default" }) {
@@ -99,15 +98,8 @@ export default function DiceRollModal({
       });
       setResult(res);
       setIsRolling(false);
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduce && (res.isCritical || res.isCriticalFail)) setFx(res.isCritical ? "crit" : "fail");
-      if (res.isCritical && !reduce) {
-        const colors = paletteHex();
-        const mobile = window.innerWidth < 768;
-        confetti({ particleCount: mobile ? 80 : 140, spread: 80, startVelocity: 42, origin: { y: 0.55 }, colors, zIndex: 9999 });
-        setTimeout(() => confetti({ particleCount: mobile ? 40 : 70, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors, zIndex: 9999 }), 180);
-        setTimeout(() => confetti({ particleCount: mobile ? 40 : 70, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors, zIndex: 9999 }), 180);
-      }
+      if (res.isCritical || res.isCriticalFail) setFx(res.isCritical ? "crit" : "fail");
+      if (res.isCritical) critConfetti();
       if (onRollResult) onRollResult({ ...res, label });
       if (navigator.vibrate && res.isCritical) navigator.vibrate([100, 50, 100, 50, 200]);
       if (navigator.vibrate && res.isCriticalFail) navigator.vibrate([300]);

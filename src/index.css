@@ -349,7 +349,20 @@
   0%, 100% { translate: 0 0; } 15% { translate: -10px 4px; } 30% { translate: 9px -5px; }
   45% { translate: -7px 3px; } 60% { translate: 6px -2px; } 75% { translate: -3px 1px; }
 }
-@media (prefers-reduced-motion: reduce) { .st-fx { display: none; } .st-fx-shake-target { animation: none; } }
+/* "Reduzir movimento" ligado no aparelho: o efeito aparece parado (luz/sombra e o texto)
+   e some sozinho; sem giro, tremor nem falha de imagem. O !important vence a regra geral
+   do fim do arquivo, que zera a duração das animações. */
+@media (prefers-reduced-motion: reduce) {
+  .st-fx-rays, .st-fx-ring, .st-fx-word-fail::before, .st-fx-word-fail::after { display: none; }
+  .st-fx-flash, .st-fx-vignette, .st-fx-word-crit, .st-fx-word-fail, .st-fx-cracks path {
+    animation: none !important;
+    opacity: 1;
+  }
+  .st-fx-flash { opacity: 0.55; }
+  .st-fx-cracks path { stroke-dashoffset: 0; }
+  .st-fx-shake-target { animation: none !important; }
+}
+
 
 /* Celular: corta os efeitos mais caros para a GPU e evita zoom ao digitar */
 @media (max-width: 767px), (pointer: coarse) {

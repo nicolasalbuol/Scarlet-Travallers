@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import confetti from "canvas-confetti";
 
 // Rachaduras saindo do centro (coordenadas em % da tela).
 const CRACKS = [
@@ -70,4 +71,16 @@ export function paletteHex() {
     return `#${f(0)}${f(8)}${f(4)}`;
   };
   return [hex(h, 19, 46), hex(h2, 45, 66), hex(h2, 60, 85), "#ffffff"];
+}
+
+// Confete nas cores do tema. Com "reduzir movimento" ligado no aparelho, sai bem menos.
+export function critConfetti() {
+  const colors = paletteHex();
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mobile = window.innerWidth < 768;
+  const n = calm ? 30 : mobile ? 80 : 140;
+  confetti({ particleCount: n, spread: 80, startVelocity: calm ? 25 : 42, origin: { y: 0.55 }, colors, zIndex: 9999 });
+  if (calm) return;
+  setTimeout(() => confetti({ particleCount: n / 2, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors, zIndex: 9999 }), 180);
+  setTimeout(() => confetti({ particleCount: n / 2, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors, zIndex: 9999 }), 180);
 }
