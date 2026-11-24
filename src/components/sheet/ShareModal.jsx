@@ -7,7 +7,8 @@ import { toast } from "sonner";
 import { base44 } from "@/api/base44Client";
 
 function generateToken() {
-  return Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+  // 128 bits de sorteio criptográfico (Math.random não é seguro para segredos).
+  return [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 export default function ShareModal({ open, onClose, character, onUpdate }) {

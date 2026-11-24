@@ -7,13 +7,7 @@
     <meta name="description" content="Scarlet Travellers - Sistema de RPG de Mesa. Crie fichas, role dados e explore infinitos universos." />
     <meta name="theme-color" content="#0b1411" />
     <title>Scarlet Travellers</title>
-    <script>
-      try {
-        if (localStorage.getItem("st-theme") === "light") document.documentElement.classList.remove("dark");
-        var p = localStorage.getItem("st-palette");
-        if (p && p !== "jade") document.documentElement.dataset.palette = p;
-      } catch (e) {}
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>

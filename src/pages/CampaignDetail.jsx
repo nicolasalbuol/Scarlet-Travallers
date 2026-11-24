@@ -115,11 +115,16 @@ export default function CampaignDetail() {
   const myCharacter = myCharacters.find((c) => c.id === me?.character_id);
 
   const updateMembers = (nextMembers, message) => {
-    base44.entities.Campanha.update(id, { members: nextMembers }).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["campaign", id] });
-      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      if (message) toast.success(message);
-    });
+    base44.entities.Campanha.update(id, { members: nextMembers })
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: ["campaign", id] });
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        if (message) toast.success(message);
+      })
+      .catch((err) => {
+        queryClient.invalidateQueries({ queryKey: ["campaign", id] });
+        toast.error(err.message || "Não foi possível salvar");
+      });
   };
 
   const addMyCharacter = (character) => {
@@ -164,11 +169,14 @@ export default function CampaignDetail() {
   };
 
   const leaveCampaign = () => {
-    updateMembers(
-      members.filter((m) => m.user_email !== user.email),
-      "Você saiu da campanha."
-    );
-    navigate("/campaigns", { replace: true });
+    base44.campaigns
+      .leave(id)
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        toast.success("Você saiu da campanha.");
+        navigate("/campaigns", { replace: true });
+      })
+      .catch((err) => toast.error(err.message || "Não foi possível sair"));
   };
 
   const filteredMembers = members.filter((m) => {

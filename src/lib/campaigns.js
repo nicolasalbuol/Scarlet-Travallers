@@ -1,8 +1,7 @@
 export function generateInviteCode() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let code = "";
-  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-  return code;
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // 32 letras: o sorteio fica sem viés
+  const bytes = crypto.getRandomValues(new Uint8Array(8));
+  return [...bytes].map((b) => chars[b % 32]).join("");
 }
 
 export function isMaster(campaign, user) {

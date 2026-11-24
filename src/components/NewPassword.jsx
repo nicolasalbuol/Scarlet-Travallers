@@ -29,7 +29,7 @@ export default function NewPassword() {
         <h1 className="font-cinzel text-xl font-bold text-foreground text-center">Nova senha</h1>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input type="password" minLength={6} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nova senha" className="pl-10 h-11 bg-background" autoFocus />
+          <Input type="password" minLength={8} maxLength={72} autoComplete="new-password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nova senha (mín. 8 caracteres)" className="pl-10 h-11 bg-background" autoFocus />
         </div>
         <Button type="submit" disabled={busy} className="w-full h-11 bg-primary">
           {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : "Salvar senha"}

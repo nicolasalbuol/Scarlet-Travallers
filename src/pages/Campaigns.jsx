@@ -63,20 +63,9 @@ export default function Campaigns() {
     mutationFn: async (code) => {
       const clean = (code || "").trim().toUpperCase();
       if (!clean) throw new Error("Digite o código de entrada");
-      const found = campaigns.find((c) => (c.invite_code || "").toUpperCase() === clean);
-      if (!found) throw new Error("Código inválido");
-      if (canAccess(found, user)) throw new Error("Você já participa desta campanha");
-      const members = [
-        ...(found.members || []),
-        {
-          user_email: user.email,
-          user_name: user.full_name || user.email,
-          character_id: "",
-          character_name: "",
-          joined_date: new Date().toISOString(),
-        },
-      ];
-      return base44.entities.Campanha.update(found.id, { members });
+      const id = await base44.campaigns.join(clean, user.full_name || user.email);
+      if (!id) throw new Error("Código inválido");
+      return { id };
     },
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });

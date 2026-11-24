@@ -137,10 +137,11 @@ export default function Login() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Senha (mín. 6 caracteres)"
+                  placeholder={mode === "signup" ? "Senha (mín. 8 caracteres)" : "Senha"}
                   className="pl-10 h-11 bg-background"
                   required
-                  minLength={6}
+                  minLength={mode === "signup" ? 8 : undefined}
+                  maxLength={72}
                   autoComplete={mode === "signup" ? "new-password" : "current-password"}
                 />
               </div>

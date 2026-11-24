@@ -27,7 +27,7 @@ create index if not exists audit_log_record_idx on public.audit_log (record_id);
 alter table public.audit_log enable row level security;
 drop policy if exists "log: só ADM lê" on public.audit_log;
 create policy "log: só ADM lê" on public.audit_log for select to authenticated using (public.is_admin());
-revoke insert, update, delete on public.audit_log from anon, authenticated;
+revoke insert, update, delete, truncate on public.audit_log from anon, authenticated;
 
 create or replace function public.audit_write()
 returns trigger language plpgsql security definer set search_path = public as $$
@@ -111,5 +111,5 @@ begin
   return 'ok';
 end $$;
 
-revoke execute on function public.revert_audit(bigint) from anon;
+revoke execute on function public.revert_audit(bigint) from public, anon;
 grant execute on function public.revert_audit(bigint) to authenticated;

@@ -134,7 +134,8 @@ async function me() {
 }
 
 async function upload(bucket, file) {
-  const ext = (file.name || "arquivo").split(".").pop();
+  // Nome gerado aqui; da extensão original só ficam letras/números (sem "../", espaços etc.).
+  const ext = ((file.name || "").split(".").pop() || "").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 5) || "bin";
   const path = `${crypto.randomUUID()}.${ext}`;
   const { error } = await supabase.storage.from(bucket).upload(path, file, { upsert: false });
   if (error) fail(error);
@@ -166,6 +167,19 @@ export const base44 = {
     },
     redirectToLogin() {
       window.location.href = "/login";
+    },
+  },
+
+  // Campanhas: entrar pelo código e sair são feitos no servidor (o banco confere tudo).
+  campaigns: {
+    async join(code, name) {
+      const { data, error } = await supabase.rpc("join_campaign", { p_code: code, p_name: name || null });
+      if (error) fail(error);
+      return data; // id da campanha, ou null se o código não existe
+    },
+    async leave(id) {
+      const { error } = await supabase.rpc("leave_campaign", { p_id: id });
+      if (error) fail(error);
     },
   },
 

@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/AuthContext";
 import { ORIGINS } from "@/lib/gameConstants";
-import { ADMIN_PASSWORD, isMasterUnlocked, setMasterUnlocked } from "@/lib/masterAccess";
+import { checkMasterPassword, isMasterUnlocked, setMasterUnlocked } from "@/lib/masterAccess";
 import CharacterCard from "@/components/characters/CharacterCard";
 import Sigil from "@/components/fx/Sigil";
 import ScrambleText from "@/components/fx/ScrambleText";
@@ -25,9 +25,9 @@ function Vault({ onUnlock }) {
   const [shake, setShake] = useState(0);
   const [opening, setOpening] = useState(false);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (password !== ADMIN_PASSWORD) {
+    if (!(await checkMasterPassword(password))) {
       setShake((n) => n + 1);
       toast.error("Senha incorreta");
       return;

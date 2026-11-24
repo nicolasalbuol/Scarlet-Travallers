@@ -1,12 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Loader2, Maximize2, ExternalLink, Download, FileWarning, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
 
+// Só links http(s): "javascript:" ou "data:" num iframe/link rodariam código no site.
+function safeUrl(raw) {
+  if (!raw || typeof raw !== "string") return "";
+  try {
+    const u = new URL(raw, window.location.origin);
+    return u.protocol === "https:" || u.protocol === "http:" ? u.href : "";
+  } catch {
+    return "";
+  }
+}
+
 function isPdf(url) {
   return /\.(pdf)(\?.*)?$/i.test(url || "");
 }
 
 export default function PdfViewer({ book }) {
-  const url = book?.url;
+  const url = safeUrl(book?.url);
   const pdf = isPdf(url);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
