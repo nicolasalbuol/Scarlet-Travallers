@@ -4,6 +4,30 @@ import { Input } from "@/components/ui/input";
 import SelectionCard from "./SelectionCard";
 import RaceModeModal from "./RaceModeModal";
 
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Deixa o texto do livro legível: cada habilidade em um parágrafo e as "Opções" em lista.
+export function formatRaceText(text = "", names = []) {
+  const [main, opts] = text.split(/\n*Opções:\s*/);
+  let out = main.trim();
+  for (const name of names) {
+    if (!name || out.startsWith(name)) continue;
+    out = out.replace(new RegExp(`\\s+(${escapeRe(name)})(?=[.:])`), "\n\n$1");
+  }
+  if (opts) out += "\n\nOpções:\n" + opts.split(/\s*\|\s*/).filter(Boolean).map((o) => `• ${o.trim()}`).join("\n");
+  return out;
+}
+
+const traitNames = (opt, kind) =>
+  (opt.caracteristicas || []).filter((c) => c.startsWith(kind + ":")).map((c) => c.slice(kind.length + 1).trim());
+
+export function raceSections(opt) {
+  return [
+    opt.vantagem && { title: "Vantagem (buff)", tone: "buff", text: formatRaceText(opt.vantagem, traitNames(opt, "Vantagem")) },
+    opt.desvantagem && { title: "Desvantagem (debuff)", tone: "debuff", text: formatRaceText(opt.desvantagem, traitNames(opt, "Desvantagem")) },
+  ].filter(Boolean);
+}
+
 export default function RaceStep({
   options,
   mode,
@@ -66,6 +90,7 @@ export default function RaceStep({
                 key={opt.name}
                 option={opt}
                 isSelected={isSelected}
+                sections={raceSections(opt)}
                 onSelect={isUnica ? onSelectRace : onToggleRace}
               />
             );

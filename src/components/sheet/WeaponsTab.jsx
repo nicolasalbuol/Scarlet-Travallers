@@ -5,11 +5,12 @@ import AutoTextarea from "@/components/ui/AutoTextarea";
 import { Plus, Trash2, ImageIcon } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
-export default function WeaponsTab({ weapons = [], editMode, onUpdate }) {
+export default function WeaponsTab({ weapons = [], editMode, canEdit = true, onStartEdit, onUpdate }) {
   const [uploading, setUploading] = useState({});
 
   const addWeapon = () => {
-    onUpdate([...weapons, { name: "", damage: "", description: "", image: "" }]);
+    if (!editMode) onStartEdit?.(); // sem isso os campos da arma nova ficavam travados
+    onUpdate([...(Array.isArray(weapons) ? weapons : []), { name: "", damage: "", description: "", image: "" }]);
   };
 
   const removeWeapon = (idx) => {
@@ -33,10 +34,16 @@ export default function WeaponsTab({ weapons = [], editMode, onUpdate }) {
     <div className="mt-4 space-y-3">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-xs font-semibold text-muted-foreground">ARMAS</h3>
-        <Button size="sm" variant="outline" onClick={addWeapon} className="h-7 text-xs border-primary/30 text-primary">
-          <Plus className="w-3 h-3 mr-1" /> Adicionar
-        </Button>
+        {canEdit && (
+          <Button size="sm" variant="outline" onClick={addWeapon} className="h-7 text-xs border-primary/30 text-primary">
+            <Plus className="w-3 h-3 mr-1" /> Adicionar
+          </Button>
+        )}
       </div>
+
+      {canEdit && !editMode && weapons.length > 0 && (
+        <p className="text-[11px] text-muted-foreground">Para escrever ou mudar uma arma, toque no lápis (editar) no topo da ficha.</p>
+      )}
 
       {weapons.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-8">Nenhuma arma cadastrada.</p>
@@ -108,6 +115,7 @@ export default function WeaponsTab({ weapons = [], editMode, onUpdate }) {
               onChange={(e) => handleChange(idx, "description", e.target.value)}
               placeholder="Descrição da arma..."
               className="bg-background"
+              readOnly={!editMode}
             />
           </div>
         </div>

@@ -74,9 +74,18 @@ export default function SelectionCard({ option, isSelected, onSelect, locked = f
         <div className="border-t border-border px-4 pb-4 pt-3 space-y-3">
           {option.description && <p className="text-sm text-foreground/80 leading-relaxed">{option.description}</p>}
           {sections?.map((s) => (
-            <div key={s.title}>
-              <p className="text-xs font-semibold text-primary mb-1">{s.title}</p>
-              <p className="text-sm text-foreground/80 leading-relaxed">{s.text}</p>
+            <div
+              key={s.title}
+              className={
+                s.tone === "buff"
+                  ? "rounded-md border border-primary/30 bg-primary/5 p-3"
+                  : s.tone === "debuff"
+                    ? "rounded-md border border-[hsl(var(--fail)/0.35)] bg-[hsl(var(--fail)/0.06)] p-3"
+                    : ""
+              }
+            >
+              <p className={`text-xs font-semibold mb-1 ${s.tone === "debuff" ? "text-[hsl(var(--fail))]" : "text-primary"}`}>{s.title}</p>
+              <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">{s.text}</p>
             </div>
           ))}
 

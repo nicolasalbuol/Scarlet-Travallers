@@ -104,7 +104,9 @@ export default function CharacterSheet() {
     const fixed = skills
       .filter((s) => !(s.name === "Disciplina" && hasDiplo))
       .map((s) => (s.name === "Disciplina" ? { ...s, name: "Diplomacia", attribute: "CAR" } : s));
-    setLocalChar({ ...character, skills: fixed });
+    // Só carrega do servidor ao abrir a ficha: depois de cada salvamento automático a ficha
+    // é recarregada, e copiar por cima apagava o que a pessoa digitou nesse meio-tempo.
+    setLocalChar((prev) => (prev && prev.id === character.id ? prev : { ...character, skills: fixed }));
   }, [character]);
 
   useEffect(() => {
@@ -332,7 +334,13 @@ export default function CharacterSheet() {
           <ListTab items={localChar.spells || []} editMode={editMode} onUpdate={(v) => updateField("spells", v)} title="Magias" />
         </TabsContent>
         <TabsContent className={PANE_CLS} value="weapons">
-          <WeaponsTab weapons={localChar.weapons || []} editMode={editMode} onUpdate={(v) => updateField("weapons", v)} />
+          <WeaponsTab
+            weapons={Array.isArray(localChar.weapons) ? localChar.weapons : []}
+            editMode={editMode}
+            canEdit={canEdit}
+            onStartEdit={() => setEditMode(true)}
+            onUpdate={(v) => updateField("weapons", v)}
+          />
         </TabsContent>
         <TabsContent className={PANE_CLS} value="inventory">
           <InventoryTab inventory={localChar.inventory || ""} editMode={editMode} onUpdate={(v) => updateField("inventory", v)} />
