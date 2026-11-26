@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AutoTextarea from "@/components/ui/AutoTextarea";
@@ -8,7 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 /** Cartões "Disponíveis para sua ficha": um clique adiciona à lista. */
 function Suggestions({ suggestions, items, onAdd, canAdd }) {
   const have = new Set((items || []).map((i) => (i.name || "").trim().toLowerCase()));
+  const [all, setAll] = useState(false);
   const open = (suggestions || []).filter((s) => !have.has((s.name || "").trim().toLowerCase()));
+  const shown = all ? open : open.slice(0, 8);
   if (!suggestions?.length) return null;
   return (
     <div className="mb-5">
@@ -22,9 +24,9 @@ function Suggestions({ suggestions, items, onAdd, canAdd }) {
       ) : (
         <div className="grid sm:grid-cols-2 gap-2">
           <AnimatePresence initial={false}>
-            {open.map((sug) => (
+            {shown.map((sug) => (
               <motion.div
-                key={sug.name}
+                key={`${sug.source || ""}:${sug.name}`}
                 layout
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -55,6 +57,11 @@ function Suggestions({ suggestions, items, onAdd, canAdd }) {
               </motion.div>
             ))}
           </AnimatePresence>
+          {open.length > shown.length && (
+            <button onClick={() => setAll(true)} className="sm:col-span-2 h-9 rounded-lg border border-border text-xs text-muted-foreground hover:text-foreground">
+              Ver todas ({open.length})
+            </button>
+          )}
         </div>
       )}
     </div>

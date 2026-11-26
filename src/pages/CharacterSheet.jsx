@@ -27,6 +27,32 @@ import DiceRollModal from "@/components/dice/DiceRollModal";
 import ShareModal from "@/components/sheet/ShareModal";
 import { useAuth } from "@/lib/AuthContext";
 import { classAbilityCatalog, traitAbilities, startingKit } from "@/lib/autoBuild";
+import { MAGIAS, ELEMENTOS_ASTRAIS } from "@/lib/magiasData";
+
+// Elementos astrais da ficha (vínculos novos ou o texto antigo de "vínculo").
+function astralElements(c) {
+  const keys = Object.keys(ELEMENTOS_ASTRAIS);
+  const fromList = (c.vinculos || []).filter((v) => /astral/i.test(v.circulo || "")).map((v) => (v.elemento || "").toUpperCase());
+  const fromText = /astral/i.test(c.elemental_bond || "")
+    ? (c.elemental_bond || "").split(/[,·]/).map((s) => s.trim().toUpperCase())
+    : [];
+  return [...new Set([...fromList, ...fromText])].filter((k) => keys.includes(k));
+}
+
+function spellSuggestions(c) {
+  return MAGIAS.filter((m) => astralElements(c).includes(m.element)).map((m) => {
+    const field = (k) => m.fields.find(([l]) => l === k)?.[1] || "";
+    const efeitos = m.fields.filter(([l]) => !["Custo", "Descrição", "Dano", "Duração"].includes(l)).map(([l, v]) => `${l}: ${v}`);
+    return {
+      name: m.name,
+      source: `${ELEMENTOS_ASTRAIS[m.element].nome} · ${m.level === "Especial" ? "Especial" : `Nível ${m.level}`}`,
+      cost: m.costPE || 0,
+      ed: field("Duração"),
+      damage: field("Dano"),
+      description: [...efeitos, field("Descrição")].filter(Boolean).join("\n"),
+    };
+  });
+}
 
 const TAB_CLS =
   "flex-shrink-0 text-xs px-3 py-2.5 rounded-none rounded-t-lg border-b-2 border-transparent text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_8px_20px_-10px_hsl(var(--h)_38%_50%/0.9)]";
@@ -331,14 +357,19 @@ export default function CharacterSheet() {
           />
         </TabsContent>
         <TabsContent className={PANE_CLS} value="spells">
-          <ListTab items={localChar.spells || []} editMode={editMode} onUpdate={(v) => updateField("spells", v)} title="Magias" />
+          <ListTab
+            items={localChar.spells || []}
+            editMode={editMode}
+            onUpdate={(v) => updateField("spells", v)}
+            title="Magias"
+            canAdd={canEdit}
+            suggestions={spellSuggestions(localChar)}
+          />
         </TabsContent>
         <TabsContent className={PANE_CLS} value="weapons">
           <WeaponsTab
             weapons={Array.isArray(localChar.weapons) ? localChar.weapons : []}
-            editMode={editMode}
             canEdit={canEdit}
-            onStartEdit={() => setEditMode(true)}
             onUpdate={(v) => updateField("weapons", v)}
           />
         </TabsContent>

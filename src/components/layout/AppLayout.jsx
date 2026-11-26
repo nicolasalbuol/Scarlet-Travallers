@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Home, BookOpen, ScrollText, User, Flag, Shield, Crown, Sun, Moon } from "lucide-react";
+import { Home, BookOpen, ScrollText, User, Flag, Shield, Crown, Sun, Moon, Wand2 } from "lucide-react";
 import { useTheme, toggleTheme } from "@/lib/theme";
 import { motion } from "framer-motion";
 import { useAuth } from "@/lib/AuthContext";
@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { path: "/characters", icon: ScrollText, label: "Fichas", hint: "Seus agentes" },
   { path: "/campaigns", icon: Flag, label: "Campanhas", hint: "Missões" },
   { path: "/book", icon: BookOpen, label: "Livro", hint: "Regras" },
+  { path: "/magias", icon: Wand2, label: "Magias", hint: "Catálogo" },
   { path: "/mestre", icon: Crown, label: "Mestre", hint: "Arquivo geral" },
   { path: "/profile", icon: User, label: "Perfil", hint: "Conta" },
 ];

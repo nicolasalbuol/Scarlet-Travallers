@@ -22,6 +22,7 @@ import CharacterBuilder from '@/pages/CharacterBuilder';
 import Campaigns from '@/pages/Campaigns';
 import CampaignDetail from '@/pages/CampaignDetail';
 import MasterArea from '@/pages/MasterArea';
+import Magias from '@/pages/Magias';
 import Sigil from '@/components/fx/Sigil';
 import { useTheme } from '@/lib/theme';
 
@@ -58,6 +59,7 @@ const AuthenticatedApp = () => {
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/book" element={<Book />} />
+        <Route path="/magias" element={<Magias />} />
         <Route path="/characters" element={<Characters />} />
         <Route path="/campaigns" element={<Campaigns />} />
         <Route path="/campaigns/:id" element={<CampaignDetail />} />

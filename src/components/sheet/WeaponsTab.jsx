@@ -5,11 +5,12 @@ import AutoTextarea from "@/components/ui/AutoTextarea";
 import { Plus, Trash2, ImageIcon } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
-export default function WeaponsTab({ weapons = [], editMode, canEdit = true, onStartEdit, onUpdate }) {
+// Igual às abas Habilidades, Magias e Inventário: quem pode editar a ficha escreve direto,
+// sem precisar ligar o lápis.
+export default function WeaponsTab({ weapons = [], canEdit = true, onUpdate }) {
   const [uploading, setUploading] = useState({});
 
   const addWeapon = () => {
-    if (!editMode) onStartEdit?.(); // sem isso os campos da arma nova ficavam travados
     onUpdate([...(Array.isArray(weapons) ? weapons : []), { name: "", damage: "", description: "", image: "" }]);
   };
 
@@ -41,10 +42,6 @@ export default function WeaponsTab({ weapons = [], editMode, canEdit = true, onS
         )}
       </div>
 
-      {canEdit && !editMode && weapons.length > 0 && (
-        <p className="text-[11px] text-muted-foreground">Para escrever ou mudar uma arma, toque no lápis (editar) no topo da ficha.</p>
-      )}
-
       {weapons.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-8">Nenhuma arma cadastrada.</p>
       )}
@@ -61,7 +58,7 @@ export default function WeaponsTab({ weapons = [], editMode, canEdit = true, onS
                   <ImageIcon className="w-5 h-5 text-muted-foreground" />
                 </div>
               )}
-              {editMode && (
+              {canEdit && (
                 <label className="block cursor-pointer">
                   <span className="text-[9px] text-primary hover:underline">
                     {uploading[idx] ? "Enviando..." : "Foto"}
@@ -86,10 +83,10 @@ export default function WeaponsTab({ weapons = [], editMode, canEdit = true, onS
                     onChange={(e) => handleChange(idx, "name", e.target.value)}
                     placeholder="Nome da arma"
                     className="bg-background text-sm"
-                    readOnly={!editMode}
+                    readOnly={!canEdit}
                   />
                 </div>
-                {editMode && (
+                {canEdit && (
                   <Button size="icon" variant="ghost" onClick={() => removeWeapon(idx)} className="h-7 w-7 text-destructive self-end">
                     <Trash2 className="w-3 h-3" />
                   </Button>
@@ -102,7 +99,7 @@ export default function WeaponsTab({ weapons = [], editMode, canEdit = true, onS
                   onChange={(e) => handleChange(idx, "damage", e.target.value)}
                   placeholder="Ex: 2d6+3"
                   className="bg-background text-xs"
-                  readOnly={!editMode}
+                  readOnly={!canEdit}
                 />
               </div>
             </div>
@@ -115,7 +112,7 @@ export default function WeaponsTab({ weapons = [], editMode, canEdit = true, onS
               onChange={(e) => handleChange(idx, "description", e.target.value)}
               placeholder="Descrição da arma..."
               className="bg-background"
-              readOnly={!editMode}
+              readOnly={!canEdit}
             />
           </div>
         </div>
